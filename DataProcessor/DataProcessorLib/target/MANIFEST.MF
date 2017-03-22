@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: DataProcessorLib
+Require-Bundle: AdapterCommonLib;bundle-version="1.0.0",FhirCommonLIB;
+ bundle-version="1.0.5"
+TIBCO-BW-SharedModule: META-INF/module.bwm
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.model; filter:="(name=bwext)",com.tib
+ co.bw.module; filter:="(&(name=AdapterCommonLib)(version=1.0.0))",com
+ .tibco.bw.module; filter:="(&(name=FhirCommonLIB)(version=1.0.5))",co
+ m.tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.b
+ w.palette; filter:="(name=bw.jdbc)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Provide-Capability: com.tibco.bw.module; name="DataProcessorLib"; vers
+ ion:Version="1.0.0",com.tibco.bw.schemas; ns="http://www.example.com/
+ namespaces/tns/1472217997216",com.tibco.bw.schemas; ns="http://www.ex
+ ample.com/namespaces/tns/1474438580664",com.tibco.bw.schemas; ns="htt
+ p://www.example.com/namespaces/tns/1476207790081",com.tibco.bw.schema
+ s; ns="http://www.example.org/ValidJmsParameters",com.tibco.bw.schema
+ s; ns="http://www.example.org/FHIRResourceLastUpdatedTimestamp",com.t
+ ibco.bw.processes; name="dataprocessorlib"
+Bundle-Name: DataProcessorLib Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .,lib/AdapterCommonLib-1.0.0-SNAPSHOT-bw-sharedmodul
+ e.jar,lib/FhirCommonLIB-1.0.4-SNAPSHOT-bw-sharedmodule.jar
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

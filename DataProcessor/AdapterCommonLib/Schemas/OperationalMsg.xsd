@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://mhs.mckesson.com/OperationalMsg" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://mhs.mckesson.com/OperationalMsg">
+
+    <complexType name="OperationalMsgType">
+    	<sequence>
+    		<element name="uuid" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Universally Unique Identifier for this
+    					OperationaMsg instance.. If it is not set the client process will set it.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="correlationID" type="string" maxOccurs="1"
+    			minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					This is the primary correlation ID to be used
+    					across related OperationalMsg's as a transaction
+    					traverses distributed tiers within MHS systems.
+    					It will be used to trace/correlated activities
+    					for a given transaction flow.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="batchCorrelationID" type="string"
+    			maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>Optional linkage to any batch that this single transaction was split from or is destined to be merged into..
+</documentation>
+                </annotation>
+    		</element>
+    		<element name="inboundTraceID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					This trace ID should be captured within inbound
+    					perimiter tiers (REST APIs, SOAP services, etc)
+    					where a transaction has been received from an
+    					external partner. The value captured here is the
+    					unique correlation ID from the partner.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="outboundTraceID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					This trace ID should be captured within outbound
+    					perimiter tiers (REST or SOAP clients, etc)
+    					where a transaction is to be sent to an external
+    					partner. The value captured here is an
+    					MHS-generated unique correlation ID that meets
+    					the schema/format required by the partner..
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="tenantID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					MHS identifier for customer organization
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="externalLogLinkageID" type="string"
+    			maxOccurs="1" minOccurs="0">
+                <annotation>
+                	<documentation>Optional identifier to provide linkage to any external logs.. Could be threadID, some external correlationID etc..</documentation>
+                </annotation>
+    		</element>
+    		<element name="subTenantID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					MHS identifier for group within customer
+    					organization.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="msgSourceTier" type="tns:processingTier"
+    			maxOccurs="1" minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Information about the internal source of this
+    					OperationalMsg.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="priorTier" type="tns:processingTier"
+    			maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Optional information about the source (prior
+    					tier in processing, relative to the source of
+    					this OperationalMsg). This is particularly
+    					useful for perimiter tiers to capture
+    					information about external systems that are
+    					transacting with MHS.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="nextTier" type="tns:processingTier"
+    			maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Optional information about the destination (next
+    					tier in processing, relative to the source of
+    					this OperationalMsg). This is particularly
+    					useful for perimiter tiers to capture
+    					information about external systems that will be
+    					transacted with.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="timestamp" type="dateTime" maxOccurs="1"
+    			minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Timestamp from the source tier (the tier
+    					generating this OperationMsg).. Must have
+    					milliseconds resolution.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="processingDomain" type="string" maxOccurs="1"
+    			minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Unique mnemonic identifier for the processing
+    					category of the audit/trace point in system..
+
+    					Examples: - DATA_HANDLER - EVENT_HANDLER -
+    					BATCH_PROCESSOR
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="processingActivity" type="string"
+    			maxOccurs="1" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					This would be coupled with processingDomain..
+    					Things like:
+
+    					- MSG_RECVD - GET_TOKEN_INPUT - GET_TOKEN_OUTPUT
+    					- TRANSFORM_INPUT - TRANSFORM_OUTPUT - MSG_SENT
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="processingDuration" type="int" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Measurement of activity within the source tier
+    					of the application in milliseconds.. Pair with
+    					'processingDomain' and 'processingActivity' to
+    					apply a name.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="description" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Description of message or short error if
+    					exception..
+    				</documentation>
+    			</annotation>
+    		</element>
+            <element name="codeSystem" minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					potential partitioning key along with day, also
+    					driver for archival/purge time window policy by
+    					record
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="PERFORMANCE"></enumeration>
+    					<enumeration value="SECURITY"></enumeration>
+    					<enumeration value="EVENT"></enumeration>
+    					<enumeration value="ERROR"></enumeration>
+    					<enumeration value="AUDIT"></enumeration>
+    					<enumeration value="GENERIC"></enumeration>
+    					<enumeration value="PHI/PII"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+            <element name="codeValue" type="int" minOccurs="1"
+    			maxOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Numeric code to enable range queries..
+
+    					TODO: define ranges - something like http status
+    					codes..
+
+    					1xx informational 2xx success 3xx redirection
+    					4xx client error 5xx server error
+    				</documentation>
+    			</annotation>
+    		</element>
+
+    		<element name="sensitiveInfoFlag" type="boolean"
+    			maxOccurs="1" minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					must set to true if the message payload or
+    					errPayload contains sensitive information
+    					requiring special permissions to view..
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="severity" minOccurs="1" maxOccurs="1">
+    			<annotation>
+    				<documentation>
+S1/ Critical
+Assigned to an error/issue that causes production to go down and the customer is unable to use the software and/or clinical content, or an error or condition which causes performance degradation resulting in critical impact to operations. 
+No obvious work around is available.
+
+S2 / High	
+Assigned to an error/issue that is not a Critical Priority, but is a reproducible error in the software and/or clinical content that affects the customer’s usage of the software or data integrity. 
+Operational workarounds may be employed and are deemed acceptable for the short term, but are unacceptable for the long term. Will consider a patch for the current generally available release/update or will provide the fix in the next release/update.
+
+S3 / Medium	
+Assigned to an issue that is not Critical or High, but minimally affects the customer’s usage of the software or data integrity. 
+Operational workarounds may be employed and are deemed acceptable for the short term and long term. Will consider a patch for the next release/update.
+
+S4 / Standard - Low
+Assigned to an issue that is of cosmetic nature, a matter of style, efficiency, or convenience, or usage clarification that does not interfere with the operation of the customer’s business. 
+Workarounds, if necessary, are acceptable. Consideration for future product release/updates will be driven by market indicators.
+
+S5 / Informational - no action
+    				</documentation>
+    			</annotation>
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="S1"></enumeration>
+    					<enumeration value="S2"></enumeration>
+    					<enumeration value="S3"></enumeration>
+    					<enumeration value="S4"></enumeration>
+    					<enumeration value="S5"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="inputPayload" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Message payload - examples include EDI, JSON,
+    					XML etc..
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="outputPayload" type="string" maxOccurs="1"
+    			minOccurs="0">
+    		</element>
+    		<element name="additionalData" type="tns:additionalDataType"
+    			maxOccurs="unbounded" minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Track arbitray name/value pairs.. Examples;
+    					capture data to enable key performance indicator
+    					analytics etc..
+    				</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="additionalDataType">
+        <annotation>
+        	<documentation>
+</documentation>
+        </annotation>
+        <sequence>
+    		<element name="name" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="value" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="type" maxOccurs="1" minOccurs="1">
+                <annotation>
+                	<documentation>TODO: further define enumeration of types..
+Document how types should be serialized in the value field..
+Or.. go value[x] like fhir does.. maybe more straight forward in the end..
+</documentation>
+                </annotation>
+                <simpleType>
+    				<restriction base="string">
+    					<enumeration value="string"></enumeration>
+    					<enumeration value="int"></enumeration>
+    					<enumeration value="dateTime"></enumeration>
+    					<enumeration value="boolean"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+        </sequence>
+    </complexType>
+
+    <element name="OperationalMsg" type="tns:OperationalMsgType"></element>
+
+    <complexType name="processingTier">
+    	<sequence>
+    		<element name="applicationName" type="string" maxOccurs="1"
+    			minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					Name of deployable artifact.. HelloWorld.ear for
+    					example
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="componentName" type="string" maxOccurs="1"
+    			minOccurs="1">
+    			<annotation>
+    				<documentation>
+    					TIBCO process, Java class, etc
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="processID" type="string" maxOccurs="1"
+    			minOccurs="0">
+                <annotation>
+                	<documentation>Process Identifier - to uniquely identify a process instance on the specified host..</documentation>
+                </annotation>
+    		</element>
+    		<element name="hostName" type="string" maxOccurs="1"
+    			minOccurs="0">
+                <annotation>
+                	<documentation>If not set the client will set it..</documentation>
+                </annotation>
+    		</element>
+    		<element name="product" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>PM, CM etc..</documentation>
+    			</annotation>
+    		</element>
+    		<element name="scope" maxOccurs="1" minOccurs="1">
+    			<simpleType>
+    				<restriction base="string">
+    					<enumeration value="INTERNAL_SYSTEM"></enumeration>
+    					<enumeration value="EXTERNAL_SYSTEM"></enumeration>
+    				</restriction>
+    			</simpleType>
+    		</element>
+    		<element name="uri" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					Address to identify the tier.. Informational but
+    					should be something meaningful and unique..
+    					Should capture things like tenantIDs etc.
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="organizationID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					How a customer or partner identifies
+    					themselves.. How a customer or partner
+    					identifies MHS
+    				</documentation>
+    			</annotation>
+    		</element>
+    		<element name="userID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<annotation>
+    				<documentation>
+    					User credential or security token..
+    				</documentation>
+    			</annotation>
+    		</element>
+    	</sequence>
+    </complexType>
+
+</schema>

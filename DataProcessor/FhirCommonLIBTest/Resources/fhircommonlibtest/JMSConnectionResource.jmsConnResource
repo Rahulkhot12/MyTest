@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndi:namedResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://xsd.tns.tibco.com/bw/models/sharedresource/jms" xmlns:jndi="http://xsd.tns.tibco.com/amf/models/sharedresource/jndi" xmi:id="_xMBnIc50EeWnjqa5XHObOg" name="fhircommonlibtest.JMSConnectionResource" type="jms:JMSConnectionFactory">
+  <jndi:reference xmi:id="_xMLYIM50EeWnjqa5XHObOg" key="jndiConnectionJNDIName" type="jms:JNDIConnection" value="fhircommonlibtest.EMSDefaultJNDIConfiguration"/>
+  <jndi:configuration xsi:type="jms:JNDIConnectionFactory" xmi:id="_xMLYIc50EeWnjqa5XHObOg" factoryType="Queue/Topic" jndiName="QueueConnectionFactory" topicFactoryJNDIName="TopicConnectionFactory">
+    <userCredentials xmi:id="_NZoHQERTEeagsvR0sZY-qQ">
+      <substitutionBindings xmi:id="_OMDCsERTEeagsvR0sZY-qQ" template="username" propName="FHIR_COMMON_JMS_USER"/>
+      <substitutionBindings xmi:id="_ObTmsERTEeagsvR0sZY-qQ" template="password" propName="FHIR_COMMON_JMS_PASSWORD"/>
+    </userCredentials>
+  </jndi:configuration>
+</jndi:namedResource>

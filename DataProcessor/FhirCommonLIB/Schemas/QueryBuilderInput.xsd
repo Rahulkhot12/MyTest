@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/QueryBuilderInput"
+	xmlns:tns="http://www.example.org/QueryBuilderInput"
+	elementFormDefault="qualified"
+	xmlns:pref="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties"
+	xmlns:pref1="http://www.example.org/BundleBuilderInput">
+
+	<import schemaLocation="MHSCoreMessagingProperties.xsd" namespace="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties"></import>
+	<element name="QueryBuilderInput"
+		type="tns:QueryBuilderInputType">
+	</element>
+
+	<complexType name="QueryBuilderInputType">
+		<sequence>
+			<element name="bundleId" type="string" maxOccurs="1"
+				minOccurs="0">
+			</element>
+			<element name="coreMsgHdrProps" type="pref:jmsAppPropType"
+				maxOccurs="1" minOccurs="1">
+			</element>
+			<element maxOccurs="1" minOccurs="0" name="inputResource"
+				type="string" />
+			<element maxOccurs="1" minOccurs="1"
+				name="inputResourceFormat" type="string" />
+			<element maxOccurs="1" minOccurs="1"
+				name="desiredOutputFormat" type="string" />
+		</sequence>
+	</complexType>
+
+
+
+</schema>

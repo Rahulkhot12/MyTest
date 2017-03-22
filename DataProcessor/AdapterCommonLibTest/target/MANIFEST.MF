@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: AdapterCommonLibTest
+Require-Bundle: AdapterCommonLib;bundle-version="1.0.0", TestCommonLIB
+ ;bundle-version="1.0.0"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.module; filter:="(&(name=AdapterCommo
+ nLib)(version=1.0.0))",com.tibco.bw.module; filter:="(&(name=TestComm
+ onLIB)(version=1.0.0))",com.tibco.bw.model; filter:="(name=bwext)",co
+ m.tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.b
+ w.palette; filter:="(name=bw.restjson)",com.tibco.bw.palette; filter:
+ ="(name=bw.java)",com.tibco.bw.palette; filter:="(name=bw.jms)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Export-Package: test.resources.certs,test.resources.ems
+Bundle-Name: AdapterCommonLibTest Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+TIBCO-BW-ApplicationModule: META-INF/module.bwm
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

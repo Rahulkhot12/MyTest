@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg">
+	<complexType name="TransformerInputType">
+    	<sequence>    	
+    		<element name="MHSTenantID" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="MHSSubTenantID" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSResourceDomain" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSResourceSubDomain" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSEventAction" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="FHIRResourceType" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="FHIRResourceIdentifier" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="IF_EventHandlerName" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="source_endpoint" type="string" minOccurs="0" maxOccurs="1"></element>    		
+    	</sequence>
+    </complexType>
+    <complexType name="TransformerOutputType">
+    	<sequence>
+    		<element name="JMSCorrelationId" type="string" minOccurs="1" maxOccurs="1"></element>    		
+    		<element name="MHSMessageType" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="MHSTenantID" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="MHSSubTenantID" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSResourceDomain" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSResourceSubDomain" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="EVT_MHSEventAction" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="FHIRResourceType" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="FHIRResourceIdentifier" type="string" minOccurs="0" maxOccurs="1"></element>
+    		<element name="Content-Type" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="Content-Type-Version" type="string" minOccurs="1" maxOccurs="1"></element>
+    		<element name="Payload" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="TransformerInput" type="tns:TransformerInputType"></element>
+
+    <element name="TransformerOutput" type="tns:TransformerOutputType"></element>
+</schema>

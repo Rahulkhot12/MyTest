@@ -1,0 +1,319 @@
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Calling EMS configuration script(s)"
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Create factories"
+
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Create Queues"
+delete queue default.MHS.PM.EVT.HNDLR
+commit
+create queue default.MHS.PM.EVT.HNDLR secure
+commit
+delete queue default.MHS.PM.EVT.HNDLR.ERROR
+commit
+create queue default.MHS.PM.EVT.HNDLR.ERROR secure
+commit
+delete queue default.MHS.PM.EVT.COREPROVHNDLR
+commit
+create queue default.MHS.PM.EVT.COREPROVHNDLR secure
+commit
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+Command: delete queue default.MHS.PM.EVT.HNDLR
+Queue 'default.MHS.PM.EVT.HNDLR' has been deleted
+Command: commit
+Configuration has been saved
+Command: create queue default.MHS.PM.EVT.HNDLR secure
+Queue 'default.MHS.PM.EVT.HNDLR' has been created
+Command: commit
+Configuration has been saved
+Command: delete queue default.MHS.PM.EVT.HNDLR.ERROR
+Queue 'default.MHS.PM.EVT.HNDLR.ERROR' not found
+Command: commit
+Configuration has been saved
+Command: create queue default.MHS.PM.EVT.HNDLR.ERROR secure
+Queue 'default.MHS.PM.EVT.HNDLR.ERROR' has been created
+Command: commit
+Configuration has been saved
+Command: delete queue default.MHS.PM.EVT.COREPROVHNDLR
+Queue 'default.MHS.PM.EVT.COREPROVHNDLR' not found
+Command: commit
+Configuration has been saved
+Command: create queue default.MHS.PM.EVT.COREPROVHNDLR secure
+Queue 'default.MHS.PM.EVT.COREPROVHNDLR' has been created
+Command: commit
+Configuration has been saved
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Create Queues"
+delete queue default.MHS.PM.EVT.HNDLR
+commit
+create queue default.MHS.PM.EVT.HNDLR secure
+commit
+delete queue default.MHS.PM.EVT.HNDLR.ERROR
+commit
+create queue default.MHS.PM.EVT.HNDLR.ERROR secure
+commit
+delete queue default.MHS.PM.EVT.COREPROVHNDLR
+commit
+create queue default.MHS.PM.EVT.COREPROVHNDLR secure
+commit
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+Command: delete topic default.MHS.FHIR.EVENT
+Topic 'default.MHS.FHIR.EVENT' not found
+Command: commit
+Configuration has been saved
+Command: create topic default.MHS.FHIR.EVENT secure
+Topic 'default.MHS.FHIR.EVENT' has been created
+Command: commit
+Configuration has been saved
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Create groups"
+
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Create users"
+
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Add members"
+
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Grant queues"
+revoke queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+Command: revoke queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+No errors detected..
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Grant topics"
+revoke topic default.MHS.FHIR.EVENT group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant topic default.MHS.FHIR.EVENT group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+Command: revoke topic default.MHS.FHIR.EVENT group=SUPER_USER_GROUP receive, send, browse, view, purge
+Error: invalid permission 'receive'
+Error occurred executing script file 'grant_topics.conf'
+Error in line 1: invalid syntax or command failed
+ERROR: Failed to invoked tibemsadmin to run grant_topics.conf.. RC=-1
+number of params passed in is 4
+host: localhost
+port: 7222
+user: admin
+pw:   ""
+"Cleanup of deprecated items.."
+"Grant queues"
+revoke queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+grant queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+grant queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+commit
+TIBCO Enterprise Message Service Administration Tool.
+Copyright 2003-2016 by TIBCO Software Inc.
+All rights reserved.
+
+Version 8.3.0 V14 3/9/2016
+
+Connected to: tcp://localhost:7222
+Command: revoke queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.HNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.HNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.HNDLR.ERROR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.HNDLR.ERROR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: revoke queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+Command: grant queue default.MHS.PM.EVT.COREPROVHNDLR group=COMMON_USER_GROUP receive, send, browse, view
+Permissions have been changed
+Command: grant queue default.MHS.PM.EVT.COREPROVHNDLR group=SUPER_USER_GROUP receive, send, browse, view, purge
+Permissions have been changed
+Command: commit
+Configuration has been saved
+No errors detected..
+No errors detected..

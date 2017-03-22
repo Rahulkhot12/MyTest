@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+TIBCO-BW-Application: META-INF/TIBCO.xml
+Bundle-SymbolicName: AdapterCommonLibTest.application
+Bundle-Version: 1.0.0.qualifier
+Bundle-Name: AdapterCommonLibTest Application
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+

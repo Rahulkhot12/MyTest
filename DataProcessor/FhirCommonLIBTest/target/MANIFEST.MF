@@ -1,0 +1,25 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: FhirCommonLIBTest
+Require-Bundle: FhirCommonLIB;bundle-version="1.0.5", TestCommonLIB;bu
+ ndle-version="1.0.0"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.module; filter:="(&(name=FhirCommonLI
+ B)(version=1.0.5))",com.tibco.bw.module; filter:="(&(name=TestCommonL
+ IB)(version=1.0.0))",com.tibco.bw.model; filter:="(name=bwext)",com.t
+ ibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.bw.p
+ alette; filter:="(name=bw.java)",com.tibco.bw.palette; filter:="(name
+ =bw.xml)",com.tibco.bw.sharedresource.model; filter:="(name=bw.jmscon
+ nection)",com.tibco.bw.sharedresource.model; filter:="(name=bw.jndico
+ nfiguration)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Export-Package: com.mckesson.interop.tests,fhircommonlib.validation
+Bundle-Name: FhirCommonLIBTest Module
+Bundle-Version: 1.0.5.qualifier
+Bundle-ClassPath: .
+TIBCO-BW-ApplicationModule: META-INF/module.bwm
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

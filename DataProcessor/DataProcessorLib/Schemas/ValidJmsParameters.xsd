@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/ValidJmsParameters" xmlns:tns="http://www.example.org/ValidJmsParameters" elementFormDefault="qualified">
+
+    <element name="ValidJMSParameters">
+      <complexType>
+    	<sequence>
+		<element name="JMSCorrelationId" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="JMSReplyTo" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="JMSDestination" minOccurs="0" maxOccurs="1">			
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="JMSExpiration" minOccurs="0" maxOccurs="1">
+			<simpleType>
+				<restriction base="long"></restriction>
+			</simpleType>
+		</element>
+		<element name="MHSMessageType" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="MHSTenantID" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="MHSSubTenantID" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="EVT_MHSResourceDomain" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>		
+		<element name="EVT_MHSResourceSubdomain" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="EVT_MHSEventAction" minOccurs="1" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>		
+		<element name="FHIRAction" minOccurs="0" maxOccurs="1">		
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>	
+		</element>
+		<element name="FHIRResourceType" minOccurs="0" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="Organization"></enumeration>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="FHIRResourceIdentifier" minOccurs="1"
+			maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<minLength value="1"></minLength>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="FHIRResourceLastUpdatedTimestamp" minOccurs="0" maxOccurs="1">
+			<simpleType>
+				<restriction base="long"></restriction>
+			</simpleType>
+		</element>
+		
+		<element name="FHIRFullUrl" minOccurs="0" maxOccurs="1">	
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>		
+		</element>
+		
+		<element name="FHIROperation" minOccurs="0" maxOccurs="1">			
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="Content-Type" minOccurs="0" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="application/json+fhir"></enumeration>
+					<enumeration value="application/xml+fhir"></enumeration>
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="Content-Type-Version" minOccurs="0"
+			maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>
+		</element>
+		<element name="AuthxToken" minOccurs="0" maxOccurs="1">		
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>	
+		</element>
+		<element name="Payload" minOccurs="0" maxOccurs="1">
+			<simpleType>
+				<restriction base="string">
+				</restriction>
+			</simpleType>
+		</element>
+    	</sequence>
+    	</complexType>
+    </element>
+</schema>

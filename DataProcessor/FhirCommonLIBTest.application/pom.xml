@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mckesson.mhs.interop</groupId>
+    <artifactId>FhirCommonLIB.application.parent</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+  </parent>
+  <artifactId>FhirCommonLIBTest.application</artifactId>
+  <packaging>bwear</packaging>
+  <properties>
+    <bw6.container.enableCi>false</bw6.container.enableCi>
+    <!--bw6.container.requiresEms>true</bw6.container.requiresEms-->
+    <!--bw6.container.leaveRunning>true</bw6.container.leaveRunning-->
+    <deploymentConfigfile>ci-deploy.properties</deploymentConfigfile>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.mckesson.mhs.interop</groupId>
+      <artifactId>FhirCommonLIBTest</artifactId>
+      <classifier>bw-appmodule</classifier>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>

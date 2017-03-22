@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/KeyValue" xmlns:tns="http://www.example.org/KeyValue" elementFormDefault="qualified">
+
+    <element name="KeyValues" type="tns:KeyValueList"></element>
+    
+    <complexType name="KeyValueList">
+    	<sequence>
+    		<element name="KeyValue" type="tns:KeyValue" maxOccurs="unbounded" minOccurs="0"></element>
+    	</sequence>
+     </complexType>
+     
+    <complexType name="KeyValue">
+    
+    	<sequence>
+    		<element name="key" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="value" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    
+    </complexType>
+</schema>

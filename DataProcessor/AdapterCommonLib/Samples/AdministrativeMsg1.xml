@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:AdministrativeInputMsg xmlns:tns="http://mhs.mckesson.com/AdministrativeMsg" xmlns:jwt="http://mckesson.com/mhs/adapter/jwt/GenerateJWTToken" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://mhs.mckesson.com/AdministrativeMsg AdministrativeMsg.xsd ">
+  <tns:correlationID>tns:correlationID</tns:correlationID>
+  <tns:tenantID>tns:tenantID</tns:tenantID>
+  <tns:subTenantID>tns:subTenantID</tns:subTenantID>
+  <tns:source>tns:source</tns:source>
+  <tns:timestamp>2001-12-31T12:00:00</tns:timestamp>
+  <tns:command>GENERATE_JWT_TOKEN</tns:command>
+  <tns:details>
+    <jwt:GenerateJWTTokenInput>
+      <jwt:subject>CXT</jwt:subject>
+      <jwt:scopes>
+        <jwt:scope>location.read</jwt:scope>
+        <jwt:scope>organization.read</jwt:scope>
+      </jwt:scopes>
+      <jwt:audiences>
+        <jwt:audience>mhs.interop</jwt:audience>
+        <jwt:audience>mhs.cxt</jwt:audience>
+      </jwt:audiences>
+      <jwt:privateKeyLocation><![CDATA[C:\temp\private4key.pem]]></jwt:privateKeyLocation>
+    </jwt:GenerateJWTTokenInput>
+  </tns:details>
+</tns:AdministrativeInputMsg>

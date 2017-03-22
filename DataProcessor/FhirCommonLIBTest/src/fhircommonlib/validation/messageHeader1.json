@@ -1,0 +1,50 @@
+{
+  "resourceType":"MessageHeader",
+  "id":"7995c9f2-fa79-4016-8f5c-4af02cfa9b4f",
+  "meta":{
+    "profile" : "http://fhir.mckesson.com/mhs/sd/messageheader-v1",
+    "tag":[
+      {
+        "system":"http://fhir.mckesson.com/mhs/vs/messagetypes-v1",
+        "code":"Event"
+      },
+      {
+        "system":"urn:oid:mhs:esb:tenantID",
+        "code":"default"
+      },
+      {
+        "system":"urn:oid:mhs:esb:subtenantID",
+        "code":"default"
+      },
+      {
+        "system":"http://fhir.mckesson.com/mhs/vs/resourcedomains-v1",
+        "code":"Provider"
+      },
+      {
+        "system":"http://fhir.mckesson.com/mhs/vs/resourcesubdomains-v1",
+        "code":"ProviderCorporation"
+      },
+      {
+        "system":"http://fhir.mckesson.com/mhs/vs/eventactions-v1",
+        "code":"TBD"
+      }
+    ]
+  },
+  "timestamp":"2016-05-11T17:51:53.338-04:00",
+  "event":{
+    "system":"urn:oid:mhs:esb:event",
+    "code":"Provider-Enrollment Complete"
+  },
+  "source":{
+    "name":"Provider Manager",
+    "software":"http://mckesson.com/provider-manager",
+    "version":"9.4",
+    "endpoint":"http://localhost:8080/fhir/"
+  },
+  "data":[
+    {
+      "reference":"Practitioner/performer-38765",
+      "display":"Some Provider's Name Goes Here"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:pref="http://hl7.org/fhir" xmlns:pref1="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties" xmlns:tns="http://www.example.org/BundleBuilderInput" elementFormDefault="qualified" targetNamespace="http://www.example.org/BundleBuilderInput">
+
+	<import namespace="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties" schemaLocation="MHSCoreMessagingProperties.xsd"/>
+	<element name="BundleBuilderInput" type="tns:BundleBuilderInputType">
+	</element>
+
+	<complexType name="BundleBuilderInputType">
+		<sequence>
+			<element maxOccurs="1" minOccurs="0" name="bundleId" type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="1" name="coreMsgHdrProps" type="pref1:jmsAppPropType">
+			</element>
+			<element maxOccurs="1" minOccurs="1" name="otherMsgHderProps" type="tns:otherMsgHeaderPropertiesType"/>
+		</sequence>
+	</complexType>
+
+
+
+	<complexType name="otherMsgHeaderPropertiesType">
+		<sequence>
+			<element name="event_system" type="string" />
+			<element name="event_code" type="string" />
+			<element maxOccurs="1" minOccurs="0"
+				name="response_identifier" type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="0" name="response_code"
+				type="string">
+			</element>
+			<element name="source_name" type="string" />
+			<element maxOccurs="1" minOccurs="0" name="source_software"
+				type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="0" name="source_version"
+				type="string">
+			</element>
+			<element name="source_endpoint" type="string" />
+			<element name="data_reference" type="string" />
+			<element maxOccurs="1" minOccurs="0"
+				name="data_reference_resourceType" type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="0"
+				name="data_reference_fullUrl" type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="0"
+				name="data_reference_payload" type="string">
+			</element>
+			<element maxOccurs="1" minOccurs="0"
+				name="data_reference_description" type="string" />
+			<element maxOccurs="unbounded" minOccurs="0"
+				name="additional_data_entries"
+				type="tns:additionaDataReferenceType">
+			</element>
+		</sequence>
+	</complexType>
+
+
+	<complexType name="additionaDataReferenceType">
+		<sequence>
+			<element name="relativeReferenceURL" type="string"/>
+			<element name="fullReferenceURL" type="string" minOccurs="0" maxOccurs="1"/>
+			<element name="resourceAsString" type="string"/>
+			<element name="contentType" type="string"/>
+		</sequence>
+	</complexType>
+</schema>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/TestResult" xmlns:tns="http://www.example.org/TestResult" elementFormDefault="qualified">
+
+    <complexType name="TestResultType">
+    	<sequence>
+    		<element name="status" type="boolean" maxOccurs="1"
+    			minOccurs="1">
+    		</element>
+    		<element name="detail" type="string" maxOccurs="1" minOccurs="0"></element>
+    	</sequence>
+    </complexType>
+    <element name="TestResult" type="tns:TestResultType"></element>
+
+    <element name="TestSuiteResult" type="string"></element>
+</schema>

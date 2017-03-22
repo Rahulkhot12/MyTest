@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_FcH-AFp0Eeaz6_aM-6tlww" targetNamespace="http://tns.tibco.com/bw/composite/DataProcessor" name="DataProcessor" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_FoTY0Fp0Eeaz6_aM-6tlww" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_FociwFp0Eeaz6_aM-6tlww" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Fog0MFp0Eeaz6_aM-6tlww" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_FolssFp0Eeaz6_aM-6tlww" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Fop-IFp0Eeaz6_aM-6tlww" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_FotogFp0Eeaz6_aM-6tlww" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_FoyhAFp0Eeaz6_aM-6tlww" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Fo2ycFp0Eeaz6_aM-6tlww" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Fo7D4Fp0Eeaz6_aM-6tlww" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_bGXD0HwIEeaxo49CK3aTuA" name="datastore.refresh.handler.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_Hyx_QH8GEea6h7qSg1ya-g" name="datastore.refresh.reply.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_11kYAIoXEeaE1fG_VHdUeA" name="datastore.data.handler.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_0vH8AIrVEeaE1fG_VHdUeA" name="datastore.data.refresh.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_31JZAJYeEeaja7DGkfApKA" name="datastore.refresh.reply.queue1" type="XMLSchema:string" scaext:simpleValue="" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_lUfaMKDzEeazX8YwEdt86A" name="datastore.refresh.handler.error.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_E-4akKIAEeavktOmb_UHOg" name="datastore.data.handler.topic" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_H0vTEKMhEeaIQ-4qg-6s1w" name="datastore.refresh.error.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_FhdJ8Fp0Eeaz6_aM-6tlww" name="ComponentProcess" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_FhdJ8Vp0Eeaz6_aM-6tlww" processName="dataprocessor.QueryProcessor"/>
+  </sca:component>
+  <sca:component xmi:id="_n-530HvtEeazTuPmHHes-w" name="ComponentUpdateIDSandEventHandlers" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_n-530XvtEeazTuPmHHes-w" processName="dataprocessor.UpdateDataStore"/>
+  </sca:component>
+  <sca:component xmi:id="__jBx8IQbEea0N4L-GsvP1Q" name="ComponentDataRefreshEventListener" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="__jBx8YQbEea0N4L-GsvP1Q" processName="dataprocessor.DataRefreshEventListener"/>
+  </sca:component>
+</sca:composite>

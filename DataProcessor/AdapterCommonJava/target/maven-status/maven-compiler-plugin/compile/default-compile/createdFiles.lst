@@ -1,0 +1,3 @@
+com\mckesson\mhs\interop\jwt\JWTTokenUtil.class
+com\mckesson\mhs\cache\GlobalCache.class
+com\mckesson\mhs\interop\compression\DataCompressionUtil.class

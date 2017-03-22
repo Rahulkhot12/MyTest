@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://www.example.com/namespaces/tns/EventProcessorGlobalCache" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.example.com/namespaces/tns/EventProcessorGlobalCache">
+  <xsd:element name="CacheInput">
+    <xsd:complexType>
+      <xsd:sequence>
+      	<xsd:element maxOccurs="1" minOccurs="1" name="domain"
+      		type="xsd:string" />
+      	<xsd:element maxOccurs="1" minOccurs="1" name="key" type="xsd:string"></xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="CacheOutput" type="tns:EventCacheMap">
+  </xsd:element>
+
+  <xsd:complexType name="EventCacheMap">
+  	<xsd:sequence>
+  		<xsd:element name="key" type="xsd:string" maxOccurs="1" minOccurs="1"></xsd:element>
+  		<xsd:element name="value" type="xsd:string" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+  	</xsd:sequence>
+  </xsd:complexType>
+  
+   <xsd:element name="values" type="tns:stringArray"></xsd:element>
+
+    <xsd:complexType name="stringArray">
+    	<xsd:sequence>
+    		<xsd:element name="value" type="xsd:string" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+  
+  
+
+    <xsd:element name="value" type="xsd:string"></xsd:element>
+</xsd:schema>
+
+  

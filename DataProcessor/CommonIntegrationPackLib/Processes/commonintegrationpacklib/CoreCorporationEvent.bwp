@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpws:process exitOnStandardFault="no"
+    name="commonintegrationpacklib.CoreCorporationEvent"
+    suppressJoinFailure="yes"
+    targetNamespace="http://xmlns.example.com/20161102123216"
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:info="http://www.tibco.com/bw/process/info"
+    xmlns:ns="http://www.tibco.com/pe/EngineTypes"
+    xmlns:ns0="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg"
+    xmlns:ns1="http://mhs.mckesson.com/OperationalMsg"
+    xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/renderxml"
+    xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+    xmlns:sca-bpel="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"
+    xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"
+    xmlns:tibprop="http://ns.tibco.com/bw/property" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <tibex:Types>
+        <xs:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.tibco.com/pe/EngineTypes"
+            xmlns:tns="http://www.tibco.com/pe/EngineTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ErrorReport">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="FullClass" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Class" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="FaultDetail">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ActivityName" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ProcessContext">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="JobId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessInstanceId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0"
+                        name="CustomJobId" type="xs:string"/>
+                    <!--xs:element name="RestartedFromCheckpoint" form="unqualified" block="extension restriction substitution" type="xs:boolean"/-->
+                    <!--xs:element minOccurs="0" maxOccurs="unbounded" name="TrackingInfo" form="unqualified" block="extension restriction substitution" type="xs:string"/-->
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="anydata">
+                <xs:sequence>
+                    <xs:any namespace="##any" processContents="lax"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ErrorReport" type="tns:ErrorReport"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="FaultDetail" type="tns:FaultDetail"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ProcessContext" type="tns:ProcessContext"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="CorrelationValue" type="xs:string"/>
+        </xs:schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="unqualified"
+            targetNamespace="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions"
+            version="" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions">
+            <complexType name="ActivityExceptionType">
+                <sequence>
+                    <element name="msg" type="string"/>
+                    <element minOccurs="0" name="msgCode" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="ActivityException" type="tns:ActivityExceptionType"/>
+            <complexType name="ActivityTimedOutExceptionType">
+                <complexContent>
+                    <extension base="tns:ActivityExceptionType"/>
+                </complexContent>
+            </complexType>
+            <element name="ActivityTimedOutException" type="tns:ActivityTimedOutExceptionType"/>
+        </schema>
+        <wsdl:definitions
+            targetNamespace="http://xmlns.example.com/20161102123216"
+            xmlns:tns="http://xmlns.example.com/20161102123216"
+            xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    </tibex:Types>
+    <tibex:ProcessInfo callable="true" createdBy="efi1fr7"
+        createdOn="Wed Nov 02 12:32:16 IST 2016" description=""
+        modifiers="public" productVersion="6.3.3 V23 2016-08-10"
+        scalable="true" singleton="true" stateless="false" type="IT"/>
+    <tibex:ProcessInterface context=""
+        input="{http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg}TransformerInput" output="{http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg}TransformerOutput"/>
+    <tibex:ProcessTemplateConfigurations/>
+    <notation:Diagram measurementUnit="Pixel" type="BWProcess"
+        xmlns:bwnotation="http://tns.tibco.com/bw/runtime/BWNotation"
+        xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <children type="2001">
+            <children type="5001"/>
+            <children type="3002">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3003">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3004">
+                <children type="4018">
+                    <children type="3018">
+                        <children type="4020">
+                            <children type="3020">
+                                <children type="4005">
+                                    <children type="3007">
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.0"/>
+                                    <layoutConstraint x="-18"
+                                    xsi:type="notation:Bounds" y="-1"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.1"/>
+                                    <layoutConstraint x="753"
+                                    xsi:type="notation:Bounds" y="22"/>
+                                    </children>
+                                    <children type="4018">
+                                    <children type="3018">
+                                    <children type="4020">
+                                    <children type="3020">
+                                    <children type="4005">
+                                    <children type="3007">
+
+                                    <children type="4002">
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@activity/@activities.2"/>
+
+                                    <layoutConstraint
+                                    x="126"
+                                    xsi:type="notation:Bounds" y="38"/>
+                                    </children>
+                                    <styles xsi:type="notation:DrawerStyle"/>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@activity"/>
+
+                                    <layoutConstraint
+                                    height="188"
+                                    width="426" xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2"/>
+                                    <layoutConstraint
+                                    height="170"
+                                    width="340"
+                                    x="15"
+                                    xsi:type="notation:Bounds" y="20"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@activity/@activities.0"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@activity/@activities.1"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4022">
+                                    <children type="3022">
+                                    <children type="4029">
+                                    <children type="3031">
+
+                                    <children type="4033">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll"/>
+
+                                    <layoutConstraint
+                                    height="34"
+                                    width="34"
+                                    xsi:type="notation:Bounds" y="68"/>
+                                    </children>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <children type="3032">
+
+                                    <children type="4005">
+
+                                    <children type="3007">
+
+                                    <children type="4002">
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity/@activities.0"/>
+
+                                    <layoutConstraint
+                                    x="-22"
+                                    xsi:type="notation:Bounds" y="23"/>
+                                    </children>
+
+                                    <children type="4002">
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity/@activities.1"/>
+
+                                    <layoutConstraint
+                                    x="116"
+                                    xsi:type="notation:Bounds" y="-6"/>
+                                    </children>
+
+                                    <children type="4002">
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <children type="4017">
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity/@activities.2"/>
+
+                                    <layoutConstraint
+                                    x="120"
+                                    xsi:type="notation:Bounds" y="67"/>
+                                    </children>
+
+                                    <styles xsi:type="notation:DrawerStyle"/>
+
+                                    <styles xsi:type="notation:SortingStyle"/>
+
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity"/>
+
+                                    <layoutConstraint
+                                    height="168"
+                                    width="259" xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll"/>
+
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <styles
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers"/>
+                                    <layoutConstraint
+                                    height="200"
+                                    width="285" xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2"/>
+                                    <layoutConstraint
+                                    height="409" width="469"
+                                    x="201"
+                                    xsi:type="notation:Bounds" y="12"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.3"/>
+                                    <layoutConstraint x="753"
+                                    xsi:type="notation:Bounds" y="146"/>
+                                    </children>
+                                    <styles xsi:type="notation:DrawerStyle"/>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    <layoutConstraint height="470"
+                                    width="890" xsi:type="notation:Bounds"/>
+                                </children>
+                                <styles xsi:type="notation:SortingStyle"/>
+                                <styles xsi:type="notation:FilteringStyle"/>
+                            </children>
+                            <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                            <styles xsi:type="bwnotation:BackgroundStyle"/>
+                            <styles xsi:type="bwnotation:ResizingStyle"/>
+                            <element href="//0/@process/@activity"/>
+                            <layoutConstraint height="365" width="444"
+                                x="30" xsi:type="notation:Bounds" y="20"/>
+                        </children>
+                        <styles xsi:type="notation:SortingStyle"/>
+                        <styles xsi:type="notation:FilteringStyle"/>
+                        <element href="//0/@process/@activity"/>
+                    </children>
+                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                    <element href="//0/@process/@activity"/>
+                    <layoutConstraint height="409" width="519" xsi:type="notation:Bounds"/>
+                </children>
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+                <element href="//0/@process"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+            <element href="//0/@process"/>
+            <layoutConstraint height="546" width="1235" xsi:type="notation:Bounds"/>
+        </children>
+        <styles xsi:type="notation:DiagramStyle"/>
+        <element href="//0"/>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.1"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@activities.2/@activity/@links/@children.0"/>
+            <bendpoints points="[3, 0, -98, 16]$[92, -9, -9, 7]" xsi:type="notation:RelativeBendpoints"/>
+            <sourceAnchor id="(0.875,0.5416666666666666)" xsi:type="notation:IdentityAnchor"/>
+            <targetAnchor id="(0.1951219512195122,0.5866666666666667)" xsi:type="notation:IdentityAnchor"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.3/@children.0/@children.0/@children.1/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.3/@children.0/@children.0/@children.1/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity/@links/@children.0"/>
+            <bendpoints points="[25, -4, -113, 25]$[114, -22, -24, 7]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.3/@children.0/@children.0/@children.1/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.3/@children.0/@children.0/@children.1/@children.0/@children.0/@children.2" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@activities.2/@faultHandlers/@catchAll/@activity/@activity/@links/@children.1"/>
+            <bendpoints
+                points="[25, 0, -117, -44]$[59, 0, -83, -44]$[59, 44, -83, 0]$[118, 44, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.0"/>
+            <bendpoints points="[0, 0, -146, -84]$[144, 78, -2, -6]" xsi:type="notation:RelativeBendpoints"/>
+            <sourceAnchor id="(1.0,1.0)" xsi:type="notation:IdentityAnchor"/>
+            <targetAnchor id="(0.006396588486140725,0.2787286063569682)" xsi:type="notation:IdentityAnchor"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.1"/>
+            <bendpoints points="[12, 10, -109, -79]$[97, 94, -24, 5]" xsi:type="notation:RelativeBendpoints"/>
+            <sourceAnchor id="(0.9744136460554371,0.26894865525672373)" xsi:type="notation:IdentityAnchor"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.2"/>
+            <bendpoints points="[-1, -1, 13, 102]$[-22, -98, -8, 5]" xsi:type="notation:RelativeBendpoints"/>
+            <sourceAnchor id="(0.45528455284552843,0.02666666666666667)" xsi:type="notation:IdentityAnchor"/>
+            <targetAnchor id="(0.17073170731707318,0.4666666666666667)" xsi:type="notation:IdentityAnchor"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2/@children.0/@children.2" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@activities.2/@activity/@links/@children.1"/>
+            <bendpoints points="[25, 2, -285, -26]$[298, 26, -12, -2]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+    </notation:Diagram>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg"/>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://mhs.mckesson.com/OperationalMsg"/>
+    <bpws:variables>
+        <bpws:variable element="ns:ProcessContext"
+            name="_processContext" sca-bpel:internal="true"/>
+        <bpws:variable element="ns0:TransformerInput"
+            name="TranslatetoFHIR-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns0:TransformerOutput"
+            name="TranslatetoFHIR" sca-bpel:internal="true"/>
+        <bpws:variable element="ns0:TransformerInput" name="Start"
+            sca-bpel:internal="true" tibex:parameter="in"/>
+        <bpws:variable name="pv.bw.process.name" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>CoreCorporationEvent</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.scope" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>INTERNAL_SYSTEM</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.codesystem.audit" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>AUDIT</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.codesystem.error" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>ERROR</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.sensitiveinfoflag" type="xsd:boolean">
+            <bpws:from>
+                <bpws:literal>false</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.severity" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>S5</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.processingdomain" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>EVENT_Handler_CoreCorporationEventHandler</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.processingactivity" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>MSG_TRANSLATED</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.description" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>Success - CoreCorporationEventHandler</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.error.processingActivity" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>TRANSLATE_MSG</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable element="ns0:TransformerOutput" name="End-input"
+            sca-bpel:internal="true" tibex:parameter="out"/>
+        <bpws:variable element="ns1:OperationalMsg"
+            name="CallAuditLog-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns1:OperationalMsg"
+            name="CallMsgTranslateFailErrorLog-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns1:OperationalMsg"
+            name="CallMissingRequiredHeaderErrorLog-input" sca-bpel:internal="true"/>
+    </bpws:variables>
+    <bpws:extensions>
+        <bpws:extension mustUnderstand="no" namespace="http://www.eclipse.org/gmf/runtime/1.0.2/notation"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bw/process/info"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca/200912"/>
+        <bpws:extension mustUnderstand="no" namespace="http://ns.tibco.com/bw/property"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bpel/2007/extensions"/>
+    </bpws:extensions>
+    <bpws:scope name="scope">
+        <bpws:flow name="flow">
+            <bpws:links>
+                <bpws:link name="StartToScope" tibex:linkType="SUCCESS"/>
+                <bpws:link name="ScopeToCallAuditLog" tibex:linkType="SUCCESS"/>
+                <bpws:link name="CallAuditLogToEnd" tibex:linkType="SUCCESS"/>
+            </bpws:links>
+            <bpws:extensionActivity>
+                <tibex:receiveEvent createInstance="yes"
+                    eventTimeout="0" name="Start" variable="Start">
+                    <bpws:sources>
+                        <bpws:source linkName="StartToScope"/>
+                    </bpws:sources>
+                    <tibex:eventSource>
+                        <tibex:StartEvent xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                    </tibex:eventSource>
+                </tibex:receiveEvent>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:activityExtension
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;TranslatetoFHIR&quot;/>&lt;xsl:template name=&quot;End-input&quot; match=&quot;/&quot;>&lt;tns:TransformerOutput>&lt;tns:JMSCorrelationId>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:JMSCorrelationId&quot;/>&lt;/tns:JMSCorrelationId>&lt;tns:MHSMessageType>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSMessageType&quot;/>&lt;/tns:MHSMessageType>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:FHIRResourceType&quot;>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:FHIRResourceIdentifier&quot;>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;/xsl:if>&lt;tns:Content-Type>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Content-Type&quot;/>&lt;/tns:Content-Type>&lt;tns:Content-Type-Version>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Content-Type-Version&quot;/>&lt;/tns:Content-Type-Version>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:Payload&quot;>&lt;tns:Payload>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Payload&quot;/>&lt;/tns:Payload>&lt;/xsl:if>&lt;/tns:TransformerOutput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="End-input" name="End">
+                    <bpws:targets>
+                        <bpws:target linkName="CallAuditLogToEnd"/>
+                    </bpws:targets>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;TranslatetoFHIR&quot;/>&lt;xsl:template name=&quot;End-input&quot; match=&quot;/&quot;>&lt;tns:TransformerOutput>&lt;tns:JMSCorrelationId>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:JMSCorrelationId&quot;/>&lt;/tns:JMSCorrelationId>&lt;tns:MHSMessageType>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSMessageType&quot;/>&lt;/tns:MHSMessageType>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:FHIRResourceType&quot;>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;/xsl:if>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:FHIRResourceIdentifier&quot;>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;/xsl:if>&lt;tns:Content-Type>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Content-Type&quot;/>&lt;/tns:Content-Type>&lt;tns:Content-Type-Version>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Content-Type-Version&quot;/>&lt;/tns:Content-Type-Version>&lt;xsl:if test=&quot;$TranslatetoFHIR/tns:Payload&quot;>&lt;tns:Payload>&lt;xsl:value-of select=&quot;$TranslatetoFHIR/tns:Payload&quot;/>&lt;/tns:Payload>&lt;/xsl:if>&lt;/tns:TransformerOutput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:config>
+                        <bwext:BWActivity
+                            activityTypeID="bw.internal.end"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:internalactivities="http://ns.tibco.com/bw/core/internalactivity" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/core/internalactivity#//End"/>
+                                    <value xsi:type="internalactivities:End"/>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:config>
+                </tibex:activityExtension>
+            </bpws:extensionActivity>
+            <bpws:scope name="Scope" tibex:group="none" tibex:xpdlId="fa58e6db-4fc2-4ea3-abe0-8466f8d0c58a">
+                <bpws:targets>
+                    <bpws:target linkName="StartToScope"/>
+                </bpws:targets>
+                <bpws:sources>
+                    <bpws:source linkName="ScopeToCallAuditLog"/>
+                </bpws:sources>
+                <bpws:variables>
+                    <bpws:variable name="FaultName"
+                        sca-bpel:internal="true" type="xsd:string"/>
+                    <bpws:variable element="ns:FaultDetail"
+                        name="FaultDetails" sca-bpel:internal="true"/>
+                </bpws:variables>
+                <bpws:faultHandlers>
+                    <bpws:catchAll tibex:faultDetailsVar="FaultDetails"
+                        tibex:faultNameVar="FaultName" tibex:xpdlId="29a39640-982b-42d4-9c57-2c6597f9cd1f">
+                        <bpws:scope name="scope1">
+                            <bpws:flow name="flow2">
+                                <bpws:links>
+                                    <bpws:link
+                                    name="EmptyToCallMsgTranslateFailErrorLog" tibex:linkType="SUCCESSWITHCONDITION"/>
+                                    <bpws:link
+                                    name="EmptyToCallMissingRequiredHeaderErrorLog" tibex:linkType="SUCCESSWITHCONDITION"/>
+                                </bpws:links>
+                                <bpws:empty name="Empty" tibex:xpdlId="0d511a6c-a17c-4609-af0e-d175719a6ad4">
+                                    <bpws:sources>
+                                    <bpws:source linkName="EmptyToCallMsgTranslateFailErrorLog">
+                                    <tibex:DesignExpression>
+                                    <tibex:expression
+                                    expression="$FaultDetails/MsgCode = string(406)" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
+                                    </tibex:DesignExpression>
+                                    <bpws:transitionCondition><![CDATA[$FaultDetails/MsgCode = string(406)]]></bpws:transitionCondition>
+                                    </bpws:source>
+                                    <bpws:source linkName="EmptyToCallMissingRequiredHeaderErrorLog">
+                                    <tibex:DesignExpression>
+                                    <tibex:expression
+                                    expression="$FaultDetails/MsgCode = string(404)" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
+                                    </tibex:DesignExpression>
+                                    <bpws:transitionCondition><![CDATA[$FaultDetails/MsgCode = string(404)]]></bpws:transitionCondition>
+                                    </bpws:source>
+                                    </bpws:sources>
+                                </bpws:empty>
+                                <bpws:extensionActivity>
+                                    <tibex:extActivity
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.error&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallMsgTranslateFailErrorLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.error&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;406&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                                    inputVariable="CallMsgTranslateFailErrorLog-input"
+                                    name="CallMsgTranslateFailErrorLog" type="bw.generalactivities.callprocess">
+                                    <bpws:targets>
+                                    <bpws:target linkName="EmptyToCallMsgTranslateFailErrorLog"/>
+                                    </bpws:targets>
+                                    <tibex:inputBindings>
+                                    <tibex:inputBinding
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.error&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallMsgTranslateFailErrorLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.error&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;406&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                                    </tibex:inputBindings>
+                                    <tibex:CallProcess
+                                    moduleRef="AdapterCommonLib"
+                                    subProcessName="adaptercommonlib.logging.Log" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                                    </tibex:extActivity>
+                                </bpws:extensionActivity>
+                                <bpws:extensionActivity>
+                                    <tibex:extActivity
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.error&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallMissingRequiredHeaderErrorLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.error&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;404&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                                    inputVariable="CallMissingRequiredHeaderErrorLog-input"
+                                    name="CallMissingRequiredHeaderErrorLog" type="bw.generalactivities.callprocess">
+                                    <bpws:targets>
+                                    <bpws:target linkName="EmptyToCallMissingRequiredHeaderErrorLog"/>
+                                    </bpws:targets>
+                                    <tibex:inputBindings>
+                                    <tibex:inputBinding
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.error&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallMissingRequiredHeaderErrorLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.error&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;404&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                                    </tibex:inputBindings>
+                                    <tibex:CallProcess
+                                    moduleRef="AdapterCommonLib"
+                                    subProcessName="adaptercommonlib.logging.Log" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                                    </tibex:extActivity>
+                                </bpws:extensionActivity>
+                            </bpws:flow>
+                        </bpws:scope>
+                    </bpws:catchAll>
+                </bpws:faultHandlers>
+                <bpws:flow name="flow1">
+                    <bpws:links>
+                        <bpws:link name="GroupStartToTranslatetoFHIR" tibex:linkType="SUCCESS"/>
+                        <bpws:link name="TranslatetoFHIRToGroupEnd" tibex:linkType="SUCCESS"/>
+                    </bpws:links>
+                    <bpws:empty name="GroupStart"
+                        tibex:group="groupStart" tibex:xpdlId="ff28c4be-c4b5-4e40-b041-8d85460cf524">
+                        <bpws:sources>
+                            <bpws:source linkName="GroupStartToTranslatetoFHIR"/>
+                        </bpws:sources>
+                    </bpws:empty>
+                    <bpws:empty name="GroupEnd" tibex:group="groupEnd" tibex:xpdlId="80a8622a-729e-4e5a-856a-5ca06d0a29ba">
+                        <bpws:targets>
+                            <bpws:target linkName="TranslatetoFHIRToGroupEnd"/>
+                        </bpws:targets>
+                    </bpws:empty>
+                    <bpws:extensionActivity>
+                        <tibex:extActivity
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;Start&quot;/>&lt;xsl:template name=&quot;TranslatetoFHIR-input&quot; match=&quot;/&quot;>&lt;tns:TransformerInput>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$Start/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$Start/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$Start/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$Start/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$Start/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;tns:IF_EventHandlerName>&lt;xsl:value-of select=&quot;$Start/tns:IF_EventHandlerName&quot;/>&lt;/tns:IF_EventHandlerName>&lt;xsl:if test=&quot;$Start/tns:source_endpoint&quot;>&lt;tns:source_endpoint>&lt;xsl:value-of select=&quot;$Start/tns:source_endpoint&quot;/>&lt;/tns:source_endpoint>&lt;/xsl:if>&lt;/tns:TransformerInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                            expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                            inputVariable="TranslatetoFHIR-input"
+                            name="TranslatetoFHIR"
+                            outputVariable="TranslatetoFHIR" type="bw.generalactivities.callprocess">
+                            <bpws:targets>
+                                <bpws:target linkName="GroupStartToTranslatetoFHIR"/>
+                            </bpws:targets>
+                            <bpws:sources>
+                                <bpws:source linkName="TranslatetoFHIRToGroupEnd"/>
+                            </bpws:sources>
+                            <tibex:inputBindings>
+                                <tibex:inputBinding
+                                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;Start&quot;/>&lt;xsl:template name=&quot;TranslatetoFHIR-input&quot; match=&quot;/&quot;>&lt;tns:TransformerInput>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$Start/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$Start/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$Start/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$Start/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$Start/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$Start/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$Start/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;tns:IF_EventHandlerName>&lt;xsl:value-of select=&quot;$Start/tns:IF_EventHandlerName&quot;/>&lt;/tns:IF_EventHandlerName>&lt;xsl:if test=&quot;$Start/tns:source_endpoint&quot;>&lt;tns:source_endpoint>&lt;xsl:value-of select=&quot;$Start/tns:source_endpoint&quot;/>&lt;/tns:source_endpoint>&lt;/xsl:if>&lt;/tns:TransformerInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                            </tibex:inputBindings>
+                            <tibex:CallProcess
+                                subProcessName="commonintegrationpacklib.FHIROutboundEventTransformer" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                        </tibex:extActivity>
+                    </bpws:extensionActivity>
+                </bpws:flow>
+            </bpws:scope>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.processingactivity&quot;/>&lt;xsl:template name=&quot;CallAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;$pv.log.processingactivity&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallAuditLog-input"
+                    name="CallAuditLog" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="ScopeToCallAuditLog"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallAuditLogToEnd"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.processingactivity&quot;/>&lt;xsl:template name=&quot;CallAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;$pv.log.processingactivity&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="AdapterCommonLib"
+                        subProcessName="adaptercommonlib.logging.Log" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+        </bpws:flow>
+    </bpws:scope>
+</bpws:process>

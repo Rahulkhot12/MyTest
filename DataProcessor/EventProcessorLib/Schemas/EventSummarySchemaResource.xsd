@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tns.tibco.com/bw/json/1472131888823" elementFormDefault="qualified" targetNamespace="http://tns.tibco.com/bw/json/1472131888823">
+  <complexType name="EventSummarySchemaElementType">
+    <sequence>
+    	<element maxOccurs="1" minOccurs="0" name="id" type="integer" />
+    	<element maxOccurs="1" minOccurs="0" name="pmTableName"
+    		type="string" />
+    	<element maxOccurs="1" minOccurs="0" name="histTableName"
+    		type="string" />
+    	<element maxOccurs="1" minOccurs="0" name="histId"
+    		type="integer" />
+    	<element maxOccurs="1" minOccurs="0" name="eventType"
+    		type="string" />
+    	<element maxOccurs="1" minOccurs="0" name="action"
+    		type="string" />
+    	<element name="status" type="string" minOccurs="0"
+    		maxOccurs="1">
+    	</element>
+    	<element name="batchId" type="integer" minOccurs="0" maxOccurs="1"></element>
+    	<element maxOccurs="1" minOccurs="0" name="details"
+    		type="string" />
+    	<element maxOccurs="1" minOccurs="0" name="ifGeneratorId"
+    		type="string" />
+    	<element maxOccurs="1" minOccurs="0" name="createTs"
+    		type="long" />
+    	<element maxOccurs="unbounded" minOccurs="0"
+    		name="eveSumRootResources">
+    		<complexType>
+    			<sequence>
+    				<element maxOccurs="1" minOccurs="0" name="id"
+    					type="integer" />
+    				<element maxOccurs="1" minOccurs="0" name="domain"
+    					type="string" />
+    				<element maxOccurs="1" minOccurs="0"
+    					name="subDomain" type="string" />
+    				<element maxOccurs="1" minOccurs="0" name="euid"
+    					type="string" />
+    				<element name="details" type="string" minOccurs="0" maxOccurs="1" nillable="true"></element>
+    			</sequence>
+    		</complexType>
+    	</element>
+    	<element name="eventSummaryDetails" type="string" minOccurs="0"
+    		maxOccurs="1" nillable="true">
+    	</element>
+    </sequence>
+  </complexType>
+  <element name="EventSummarySchemaElement" type="tns:EventSummarySchemaElementType"/>
+  <complexType name="EventSummarySchemaElementArrayType">
+    <sequence>
+      <element maxOccurs="unbounded" minOccurs="0" ref="tns:EventSummarySchemaElement"/>
+    </sequence>
+  </complexType>
+  <element name="EventSummarySchemaElementArray" type="tns:EventSummarySchemaElementArrayType"/>
+</schema>

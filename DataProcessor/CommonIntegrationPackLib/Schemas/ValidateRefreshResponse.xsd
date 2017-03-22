@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://www.example.com/namespaces/tns/1477927073000" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.example.com/namespaces/tns/1477927073000">
+  <xsd:element name="Element">
+    <xsd:complexType>
+      <xsd:sequence>
+
+      	<xsd:element name="refreshStatus" type="xsd:string" minOccurs="1" maxOccurs="1"></xsd:element>
+      	<xsd:element name="messageBody" type="xsd:string"
+      		minOccurs="1" maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="handlerName" type="xsd:string"
+      		minOccurs="1" maxOccurs="1">
+      	</xsd:element>
+
+      	<xsd:element name="correlationId" type="xsd:string"
+      		minOccurs="1" maxOccurs="1">
+      	</xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+
+
+
+    <xsd:element name="status" type="xsd:boolean"></xsd:element>
+</xsd:schema>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndi:namedResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://xsd.tns.tibco.com/bw/models/sharedresource/jms" xmlns:jndi="http://xsd.tns.tibco.com/amf/models/sharedresource/jndi" xmi:id="_AB_QoVJdEeaugsWPki1a-w" name="adapterCommon.EMSAdminJNDIConfiguration" type="jms:JNDIConnection">
+  <jndi:description>Administrative EMS JNDI Configuration</jndi:description>
+  <jndi:configuration xsi:type="jms:JNDIConnectionConfiguration" xmi:id="_AB_3sFJdEeaugsWPki1a-w">
+    <substitutionBindings xmi:id="_Jl7sEFJdEeaugsWPki1a-w" template="initialContextFactory" propName="COMMON_JNDI_Initial_Context_Factory"/>
+    <substitutionBindings xmi:id="_PBq8AFJdEeaugsWPki1a-w" template="providerUrl" propName="COMMON_JNDI_Naming_Provider_URL"/>
+    <userCredentials xmi:id="_R2GLcFJdEeaugsWPki1a-w" username="ADMIN_JNDI_USER ">
+      <substitutionBindings xmi:id="_SZ41AFJdEeaugsWPki1a-w" template="username" propName="ADMIN_JNDI_USER"/>
+      <substitutionBindings xmi:id="_SztqQFJdEeaugsWPki1a-w" template="password" propName="ADMIN_JNDI_PASSWORD"/>
+    </userCredentials>
+  </jndi:configuration>
+</jndi:namedResource>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/FhirValidator"
+	xmlns:tns="http://www.example.org/FhirValidator"
+	elementFormDefault="qualified" xmlns:Q1="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties">
+	
+	<import namespace="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties" schemaLocation="MHSCoreMessagingProperties.xsd"/>
+
+	<complexType name="ResourceValidationInputType">
+		<sequence>
+			<element name="resourcePayload" type="string"></element>
+			<element name="resourcePayloadContentType" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<element name="ResourceValidationInput"
+		type="tns:ResourceValidationInputType">
+	</element>
+
+	<complexType name="ResourceValidationOutputType">
+		<sequence>
+			<element name="OperationOutcomePayload" type="string"></element>
+			<element name="issuesFound" type="int"></element>
+		</sequence>
+	</complexType>
+
+	<element name="ResourceValidationOutput"
+		type="tns:ResourceValidationOutputType">
+	</element>
+
+	<complexType name="MsgStructureValidationInputType">
+		<sequence>
+			<element name="messageProperties" type="Q1:jmsAppPropType"></element>
+			<element name="bundlePayload" type="string"></element>
+			<element name="bundlePayloadContentType" type="string"></element>
+		</sequence>
+	</complexType>
+
+	<element name="MsgStructureValidationInput"
+		type="tns:MsgStructureValidationInputType">
+	</element>
+
+	<complexType name="MsgStructureValidationOutputType">
+		<sequence>
+			<element name="OperationOutcomePayload" type="string"></element>
+			<element name="issuesFound"
+				type="int">
+			</element>
+		</sequence>
+	</complexType>
+
+	<element name="MsgStructureValidationOutput"
+		type="tns:MsgStructureValidationOutputType">
+	</element>
+
+</schema>

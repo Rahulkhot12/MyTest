@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://mckesson.com/mhs/fhir/GimmeBoth" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://mckesson.com/mhs/fhir/GimmeBoth">
+  <xsd:element name="GimmeBothFormatsInput">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="1" minOccurs="1" name="inputContentType" type="xsd:string"/>
+        <xsd:element maxOccurs="1" minOccurs="1" name="inputResource" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="GimmeBothFormatsOutput">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element maxOccurs="1" minOccurs="1" name="jsonString" type="xsd:string"/>
+        <xsd:element maxOccurs="1" minOccurs="0" name="xmlString" type="xsd:string"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

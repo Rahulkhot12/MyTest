@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:rest="http://xsd.tns.tibco.com/bw/models/binding/rest" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scact="http://xsd.tns.tibco.com/amf/models/sca/componentType" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_G7NJwEkeEeaSoPmhNn4yCw" targetNamespace="http://tns.tibco.com/bw/composite/AdapterCommonLibTest" name="AdapterCommonLibTest" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_HFXLUEkeEeaSoPmhNn4yCw" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFegEEkeEeaSoPmhNn4yCw" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFg8UEkeEeaSoPmhNn4yCw" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFl00EkeEeaSoPmhNn4yCw" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFo4IEkeEeaSoPmhNn4yCw" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFr7cEkeEeaSoPmhNn4yCw" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HFzQMEkeEeaSoPmhNn4yCw" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HF26kEkeEeaSoPmhNn4yCw" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_HF5W0EkeEeaSoPmhNn4yCw" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_jBdy0FJ_EeaiOu65T30FjA" name="ADAPTER_COMMON_LIB_TEST_QUEUE" type="XMLSchema:string" scaext:simpleValue="" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_DRxHQHKGEeakYZELdLUrgA" name="test.log.audit.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_hR7-MHKlEeaqTrBW-BIr_A" name="test.log.general.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_D4qMMHtaEeaLCcl2ecucqA" name="test.tenant.id" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_GbpGUHtaEeaLCcl2ecucqA" name="test.subtenant.id" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_JaCKEHtaEeaLCcl2ecucqA" name="test.organization.id" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_OUFscHteEeaZ5uvPL6WpbA" name="test.log.audit.message.expiration" type="XMLSchema:long" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_SpniQHteEeaZ5uvPL6WpbA" name="test.log.general.message.expiration" type="XMLSchema:long" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_xdd0gGL1Eea2Jex9-APkeA" name="ComponentRunTestSuite" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_xdd0gWL1Eea2Jex9-APkeA" processName="testmain.RunTestSuite"/>
+  </sca:component>
+  <sca:component xmi:id="_3Rnr0HtcEeaZ5uvPL6WpbA" name="ComponentLogErrorTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_3Rnr0XtcEeaZ5uvPL6WpbA" processName="adaptercommonlib.logging.LogErrorTest"/>
+  </sca:component>
+</sca:composite>

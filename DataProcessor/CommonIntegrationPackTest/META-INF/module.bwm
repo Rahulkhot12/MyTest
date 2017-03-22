@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_PUuowIQfEea97cp-bfp2Dw" targetNamespace="http://tns.tibco.com/bw/composite/CommonIntegrationPackTest" name="CommonIntegrationPackTest" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_PbhNQIQfEea97cp-bfp2Dw" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_PbqXMIQfEea97cp-bfp2Dw" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_PbszcIQfEea97cp-bfp2Dw" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_PbuooIQfEea97cp-bfp2Dw" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_PbxE4IQfEea97cp-bfp2Dw" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_PbzhIIQfEea97cp-bfp2Dw" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Pb1WUIQfEea97cp-bfp2Dw" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Pb4ZoIQfEea97cp-bfp2Dw" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Pb6O0IQfEea97cp-bfp2Dw" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_EjpDUJ9_EeaDto32yy1UsA" name="CommonIntegrationPack.handler.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_Iu2fgJ9_EeaDto32yy1UsA" name="CommonIntegrationPack.handler.error.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_KyytMJ9_EeaDto32yy1UsA" name="CommonIntegrationPack.max.retryonerror.attempts" type="XMLSchema:int" scaext:simpleValue="0" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_O0R5gKArEeaiI4wvlOc7TA" name="CommonIntegrationPack.audit.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_SxCXkIQfEea97cp-bfp2Dw" name="ComponentProcess" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_SxCXkYQfEea97cp-bfp2Dw" processName="commonintegrationpacktest.Process"/>
+  </sca:component>
+  <sca:component xmi:id="_vH2xYJE_EeaYOPtk2Ww8VA" name="ComponentGetSubDomainCacheTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_vH2xYZE_EeaYOPtk2Ww8VA" processName="commonintegrationpacktest.GetSubDomainCacheTest"/>
+  </sca:component>
+  <sca:component xmi:id="_MBDU0JFBEeaYOPtk2Ww8VA" name="ComponentRunTestSuite" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_MBDU0ZFBEeaYOPtk2Ww8VA" processName="testmain.RunTestSuite"/>
+  </sca:component>
+  <sca:component xmi:id="_AITCMJoVEeaYXOWxNyp7CA" name="ComponentGetMHSDomainEmptyTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_AITCMZoVEeaYXOWxNyp7CA" processName="commonintegrationpacktest.GetMHSDomainEmptyTest"/>
+  </sca:component>
+  <sca:component xmi:id="_I76UcJo3EeaZPd9MtfKlFg" name="ComponentGetMHSSubDomainsEmptyTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_I76UcZo3EeaZPd9MtfKlFg" processName="commonintegrationpacktest.GetMHSSubDomainsEmptyTest"/>
+  </sca:component>
+  <sca:component xmi:id="_LRZL0Jo8EeaZPd9MtfKlFg" name="ComponentGetContentTypeVersionEmptyTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_LRZL0Zo8EeaZPd9MtfKlFg" processName="commonintegrationpacktest.GetContentTypeVersionEmptyTest"/>
+  </sca:component>
+  <sca:component xmi:id="_hhWNkJpBEeazE_6X83tpaw" name="ComponentGetMHSSubDomainsExistsTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_hhWNkZpBEeazE_6X83tpaw" processName="commonintegrationpacktest.GetMHSSubDomainsExistsTest"/>
+  </sca:component>
+  <sca:component xmi:id="_hb1CIJpGEeazE_6X83tpaw" name="ComponentGetContentTypeVersionExistsTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_hb1CIZpGEeazE_6X83tpaw" processName="commonintegrationpacktest.GetContentTypeVersionExistsTest"/>
+  </sca:component>
+</sca:composite>

@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: EventProcessor
+Require-Bundle: AdapterCommonLib;bundle-version="1.0.0", EventProcesso
+ rLib;bundle-version="1.0.0"
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.module; filter:="(&(name=AdapterCommo
+ nLib)(version=1.0.0))",com.tibco.bw.module; filter:="(&(name=EventPro
+ cessorLib)(version=1.0.0))",com.tibco.bw.model; filter:="(name=bwext)
+ ",com.tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tib
+ co.bw.palette; filter:="(name=bw.jms)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Bundle-Name: EventProcessor Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+TIBCO-BW-ApplicationModule: META-INF/module.bwm
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

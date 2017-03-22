@@ -1,0 +1,46 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: AdapterCommonLib
+TIBCO-BW-SharedModule: META-INF/module.bwm
+Bundle-ManifestVersion: 2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.model; filter:="(name=bwext)",com.tib
+ co.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.bw.pal
+ ette; filter:="(name=bw.jdbc)",com.tibco.bw.palette; filter:="(name=b
+ w.restjson)",com.tibco.bw.palette; filter:="(name=bw.java)",com.tibco
+ .bw.palette; filter:="(name=bw.jms)",com.tibco.bw.sharedresource.mode
+ l; filter:="(name=bw.java)",com.tibco.bw.sharedresource.model; filter
+ :="(name=bw.jdbc)",com.tibco.bw.sharedresource.model; filter:="(name=
+ bw.jmsconnection)",com.tibco.bw.sharedresource.model; filter:="(name=
+ bw.jndiconfiguration)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Provide-Capability: com.tibco.bw.module; name="AdapterCommonLib"; vers
+ ion:Version="1.0.0",com.tibco.bw.schemas; ns="http://mckesson.com/mhs
+ /adapter/cache/CacheClear",com.tibco.bw.schemas; ns="http://mckesson.
+ com/mhs/adapter/jwt/GenerateJWTToken",com.tibco.bw.schemas; ns="http:
+ //mckesson.com/mhs/adapter/jwt/VerifyAuthorizationInToken",com.tibco.
+ bw.schemas; ns="http://mhs.mckesson.com/AdministrativeMsg",com.tibco.
+ bw.schemas; ns="http://mhs.mckesson.com/OperationalMsg",com.tibco.bw.
+ schemas; ns="http://www.example.com/namespaces/tns/1469701539434",com
+ .tibco.bw.schemas; ns="http://www.example.com/namespaces/tns/EventPro
+ cessorGlobalCache",com.tibco.bw.schemas; ns="http://www.example.com/n
+ amespaces/tns/compressionIN",com.tibco.bw.schemas; ns="http://www.exa
+ mple.org/KeyValue",com.tibco.bw.schemas; ns="http://www.example.com/n
+ amespaces/tns/1474299794086",com.tibco.bw.schemas; ns="http://tns.tib
+ co.com/bw/json/1478171410033",com.tibco.bw.resources; name="adapterCo
+ mmon",com.tibco.bw.processes; name="adaptercommonlib.jwt",com.tibco.b
+ w.processes; name="adaptercommonlib.compression",com.tibco.bw.process
+ es; name="adaptercommonlib.logging",com.tibco.bw.processes; name="ada
+ ptercommonlib.cache",com.tibco.bw.processes; name="adaptercommonlib.h
+ andler"
+Export-Package: main.resources.ems
+Bundle-Name: AdapterCommonLib Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .,lib/AdapterCommonJava-1.0.0-SNAPSHOT.jar,lib/commo
+ ns-io-2.5.jar,lib/nimbus-jose-jwt-4.22.jar,lib/jcip-annotations-1.0-1
+ .jar,lib/json-smart-1.3.1.jar,lib/lz4-1.3.0.jar,lib/logback-core-1.1.
+ 7.jar,lib/logback-classic-1.1.7.jar,lib/slf4j-api-1.7.21.jar
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

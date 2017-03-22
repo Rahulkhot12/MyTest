@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_f_JIQFr5EeaVy6F6b45guQ" targetNamespace="http://tns.tibco.com/bw/composite/EventProcessor" name="EventProcessor" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_hBD4QFr5EeaVy6F6b45guQ" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hBWzMFr5EeaVy6F6b45guQ" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hBgkMFr5EeaVy6F6b45guQ" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hBzfIFr5EeaVy6F6b45guQ" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hB9QIFr5EeaVy6F6b45guQ" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hCHBIFr5EeaVy6F6b45guQ" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hCQyIFr5EeaVy6F6b45guQ" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hCZ8EFr5EeaVy6F6b45guQ" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_hCjtEFr5EeaVy6F6b45guQ" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_NaCJIHXmEeakj8Z4Nqoo2Q" name="EventProcessor.timer.interval" type="XMLSchema:int" description="Event Processor Scheduler interval for unit e.g., 30 for 30 Second." publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_weArMHaUEeaySaAFGVSWWA" name="EventProcessor.staging.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_eBIlcHqgEeaRZqOzTMVVjQ" name="EventProcessor.interproc.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_4rGGoHqgEeaRZqOzTMVVjQ" name="EventProcessor.aggregation.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_qOG7sH6dEeaXcp3NrNeN5w" name="EventProcessor.aggregation.error.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_AUgyIH6eEeaXcp3NrNeN5w" name="EventProcessor.interproc.error.queue.name" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="__pY7EH6pEeaXcp3NrNeN5w" name="EventProcessor.max.retryonerror.attempts" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_30dc8HXnEeakj8Z4Nqoo2Q" name="ComponentEventProcessorProcess" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_30dc8XXnEeakj8Z4Nqoo2Q" processName="eventprocessor.EventProcessorProcess"/>
+  </sca:component>
+  <sca:component xmi:id="_ZsEqsHqVEeaRZqOzTMVVjQ" name="ComponentAggregateCmdListener" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_ZsFRwHqVEeaRZqOzTMVVjQ" processName="eventprocessor.AggregateCmdListener"/>
+  </sca:component>
+  <sca:component xmi:id="_bCQb8H7yEeaWLfxTna8WWA" name="ComponentLoadAggregatorCache" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_bCQb8X7yEeaWLfxTna8WWA" processName="eventprocessor.LoadAggregatorCache"/>
+  </sca:component>
+</sca:composite>

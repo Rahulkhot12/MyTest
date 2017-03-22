@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://mckesson.com/mhs/adapter/jwt/ValidateJWTToken" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.example.com/namespaces/tns/1469701539434">
+  <xsd:element name="ValicateJWTTokenInput">
+    <xsd:complexType>
+      <xsd:sequence>
+                <xsd:element name="accessToken" type="xsd:string"/>
+                <xsd:element name="publicKeyLocation" type="xsd:string"/>
+            </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  <xsd:element name="ValicateJWTTokenOutput">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="validationStatus" type="xsd:boolean"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

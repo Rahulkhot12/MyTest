@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/Subdomains" xmlns:tns="http://www.example.org/Subdomains" elementFormDefault="qualified">
+
+    <complexType name="ResolveActionInputType">
+    	<sequence>
+    		<element name="subomains" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="ResolveActionOutputType">
+    	<sequence>
+    		<element name="subdomains" type="string" minOccurs="1" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="ResolveActionInput" type="tns:ResolveActionInputType"></element>
+
+    <element name="ResolveActionOutput" type="tns:ResolveActionInputType"></element>
+
+
+    <complexType name="SubDomainsListType">
+    	<sequence>
+    		<element name="subdomains" type="string" minOccurs="0" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="IFSubDomainsList" type="tns:SubDomainsListType"></element>
+
+    <element name="MHSSubDomainsList" type="tns:SubDomainsListType"></element>
+
+</schema>

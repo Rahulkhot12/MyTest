@@ -1,0 +1,50 @@
+{
+    "resourceType":"Bundle",
+    "id":"90c61b2c-58f8-4c0e-a3c7-702923ccb9a5",
+    "type":"message",
+    "entry":[
+        {
+            "resource":{
+                "resourceType":"MessageHeader",
+                "id":"7995c9f2-fa79-4016-8f5c-4af02cfa9b4f",
+                "meta":{
+                    "tag":[
+                        {
+                            "system":"http://fhir.mckesson.com/mhs/vs/messagetypes-v1",
+                            "code":"Event"
+                        },
+                        {
+                            "system":"urn:uuid:mhs:esb:subtenantID",
+                            "code":"default"
+                        },
+                        {
+                            "system":"http://fhir.mckesson.com/mhs/vs/resourcedomains-v1",
+                            "code":"Provider"
+                        },
+                        {
+                            "system":"http://fhir.mckesson.com/mhs/vs/resourcesubdomains-v1",
+                            "code":"networks"
+                        }
+                    ]
+                },
+                "timestamp":"2016-05-11T17:51:53.338-04:00",
+                "event":{
+                    "system":"urn:uuid:mhs:esb:event",
+                    "code":"Provider-Enrollment Complete"
+                },
+                "source":{
+                    "name":"Provider Manager",
+                    "software":"http://mckesson.com/provider-manager",
+                    "version":"9.4",
+                    "endpoint":"jms:queue:default.MHS.FHIR.EVENT"
+                },
+                "data":[
+                    {
+                        "reference":"Organization/PM-P-229C8E3E361A0205E053ABE37A0AD7CD",
+                        "display":"Some Provider's Name Goes Here"
+                    }
+                ]
+            }
+        }
+    ]
+}

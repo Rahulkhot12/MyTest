@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<annox:class xmlns:annox="http://annox.dev.java.net" xmlns:jaxb="http://annox.dev.java.net/javax.xml.bind.annotation" name="ArrayList">
+  <jaxb:XmlAccessorType value="NONE"/>
+  <jaxb:XmlType name="ArrayListType" propOrder="Empty iterator "/>
+  <jaxb:XmlRootElement name="ArrayList" namespace="www.tibco.com/plugin/java/xmlSchema/java.util.ArrayList"/>
+  <annox:field name="Empty">
+    <jaxb:XmlElement name="Empty" namespace="www.tibco.com/plugin/java/xmlSchema/java.util.ArrayList" required="false" type="java.lang.Boolean"/>
+  </annox:field>
+  <annox:field name="iterator">
+    <jaxb:XmlElement name="iterator" namespace="www.tibco.com/plugin/java/xmlSchema/java.util.ArrayList"/>
+  </annox:field>
+</annox:class>

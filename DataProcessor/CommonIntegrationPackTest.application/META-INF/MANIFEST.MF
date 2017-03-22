@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+TIBCO-BW-Application: META-INF/TIBCO.xml
+Bundle-SymbolicName: CommonIntegrationPackTest.application
+Bundle-Name: CommonIntegrationPackTest Application
+Bundle-Version: 1.0.0.qualifier
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.3 V23 2016-08-10
+

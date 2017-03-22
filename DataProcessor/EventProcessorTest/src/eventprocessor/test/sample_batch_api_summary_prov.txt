@@ -1,0 +1,1 @@
+{"id":11,"pmTableName":"PP_PROV","histTableName":"H_PP_PROV","histId":123,"eventType":"DATA","action":"UPDATE","details":"foo","ifGeneratorId":"IF-1","createTs":1466714912185,"eveSumRootResources":[{"id":1,"domain":"Providers","subDomain":"Demographics","euid":"123456789"}],"eventSummaryDetails":null}

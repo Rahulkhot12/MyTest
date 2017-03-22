@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: EventProcessorLib
+Require-Bundle: AdapterCommonLib;bundle-version="1.0.0"
+TIBCO-BW-SharedModule: META-INF/module.bwm
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.model; filter:="(name=bwext)",com.tib
+ co.bw.module; filter:="(&(name=AdapterCommonLib)(version=1.0.0))",com
+ .tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.bw
+ .palette; filter:="(name=bw.restjson)",com.tibco.bw.palette; filter:=
+ "(name=bw.jms)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Provide-Capability: com.tibco.bw.module; name="EventProcessorLib"; ver
+ sion:Version="1.0.0",com.tibco.bw.schemas; ns="http://tns.tibco.com/b
+ w/json/1472131888823",com.tibco.bw.schemas; ns="http://www.example.co
+ m/namespaces/tns/1464964971106",com.tibco.bw.schemas; ns="http://www.
+ example.com/namespaces/tns/1464964971107",com.tibco.bw.schemas; ns="h
+ ttp://www.example.com/namespaces/tns/1472058717639",com.tibco.bw.sche
+ mas; ns="http://www.example.com/namespaces/tns/1473870412867",com.tib
+ co.bw.schemas; ns="http://www.example.com/namespaces/tns/147401830128
+ 1",com.tibco.bw.processes; name="eventprocessorlib"
+Bundle-Name: EventProcessorLib Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .,lib/AdapterCommonLib-1.0.0-SNAPSHOT-bw-sharedmodul
+ e.jar
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

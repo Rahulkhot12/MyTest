@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://www.example.com/namespaces/tns/1476207790081" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.example.com/namespaces/tns/1476207790081">
+  <xsd:element name="CheckForMissingDataInput">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="JMSCorrelationId" type="xsd:string"/>
+        <xsd:element name="JMSReplyTo" type="xsd:string"/>
+        <xsd:element name="JMSDestination" type="xsd:string"/>
+        <xsd:element name="JMSExpiration" type="xsd:long"/>
+        <xsd:element name="MHSMessageType" type="xsd:string"/>
+        <xsd:element name="MHSTenantID" type="xsd:string"/>
+        <xsd:element name="MHSSubTenantID" type="xsd:string"/>
+        <xsd:element name="Content-Type" type="xsd:string"/>
+        <xsd:element name="Content-Type-Version" type="xsd:string"/>
+        <xsd:element name="EVT_MHSResourceDomain" type="xsd:string"/>
+        <xsd:element name="EVT_MHSResourceSubDomain" type="xsd:string"/>
+        <xsd:element name="EVT_MHSEventAction" type="xsd:string"/>
+        <xsd:element name="FHIRAction" type="xsd:string"/>
+        <xsd:element name="FHIRResourceType" type="xsd:string"/>
+        <xsd:element name="FHIRResourceIdentifier" type="xsd:string"/>
+        <xsd:element name="FHIRResourceLastUpdatedTimestamp" type="xsd:long" maxOccurs="1" minOccurs="0"/>
+        <xsd:element name="FHIRFullUrl" type="xsd:string"/>
+        <xsd:element name="FHIROperation" type="xsd:string"/>
+        <xsd:element name="AuthxToken" type="xsd:string"/>
+        <xsd:element name="Payload" type="xsd:string"/>        
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

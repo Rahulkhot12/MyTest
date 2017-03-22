@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sca:composite xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:BW="http://xsd.tns.tibco.com/amf/models/sca/implementationtype/BW" xmlns:XMLSchema="http://www.w3.org/2001/XMLSchema" xmlns:compositeext="http://schemas.tibco.com/amx/3.0/compositeext" xmlns:sca="http://www.osoa.org/xmlns/sca/1.0" xmlns:scaext="http://xsd.tns.tibco.com/amf/models/sca/extensions" xmi:id="_KZiYUFi1EeajOOJPp7E1wg" targetNamespace="http://tns.tibco.com/bw/composite/AdminServicesTest" name="AdminServicesTest" compositeext:version="1.0.0" compositeext:formatVersion="2">
+  <sca:property xmi:id="_KpW9AFi1EeajOOJPp7E1wg" name="BW.DEPLOYMENTUNIT.TYPE" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_KpjKQFi1EeajOOJPp7E1wg" name="BW.APPNODE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_KppQ4Fi1EeajOOJPp7E1wg" name="BW.DEPLOYMENTUNIT.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_KppQ4Vi1EeajOOJPp7E1wg" name="BW.HOST.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Kp1eIFi1EeajOOJPp7E1wg" name="BW.DOMAIN.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Kp7kwFi1EeajOOJPp7E1wg" name="BW.DEPLOYMENTUNIT.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_Kp7kwVi1EeajOOJPp7E1wg" name="BW.APPSPACE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_KqHyAFi1EeajOOJPp7E1wg" name="BW.MODULE.VERSION" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_KqHyAVi1EeajOOJPp7E1wg" name="BW.MODULE.NAME" type="XMLSchema:string" scalable="true"/>
+  <sca:property xmi:id="_mCyNcH_fEea7V9v6nQBL5Q" name="admin.command.topic" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_vBfN0H_fEea7V9v6nQBL5Q" name="admin.command.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:property xmi:id="_1yC7oH_fEea7V9v6nQBL5Q" name="admin.command.reply.queue" type="XMLSchema:string" publicAccess="true" scalable="true"/>
+  <sca:component xmi:id="_KgiYMFi1EeajOOJPp7E1wg" name="ComponentProcess" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_KgiYMVi1EeajOOJPp7E1wg" processName="adminservicestest.Process"/>
+  </sca:component>
+  <sca:component xmi:id="_XL2NYH_qEea7V9v6nQBL5Q" name="ComponentTopicClearCacheTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_XL2NYX_qEea7V9v6nQBL5Q" processName="adminservicestest.TopicClearCacheTest"/>
+  </sca:component>
+  <sca:component xmi:id="_6WII0H_1EeaozrOPpsX23w" name="ComponentRunTestSuite" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_6WII0X_1EeaozrOPpsX23w" processName="testmain.RunTestSuite"/>
+  </sca:component>
+  <sca:component xmi:id="_ComvQIlgEeaerpsI5sol2g" name="ComponentGetHandlerTest" compositeext:version="1.0.0.qualifier">
+    <scaext:implementation xsi:type="BW:BWComponentImplementation" xmi:id="_ComvQYlgEeaerpsI5sol2g" processName="adminservicestest.GetHandlerTest"/>
+  </sca:component>
+</sca:composite>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://mhs.mckesson.com/commonintegrationpacklib/GetContentTypeVersionMsg" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://mhs.mckesson.com/commonintegrationpacklib/GetContentTypeVersionMsg">
+
+    <complexType name="GetContentTypeVersionInputType">
+    	<sequence>
+    		<element name="IF_EventHandlerName" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="GetContentTypeVersionInput" type="tns:GetContentTypeVersionInputType"></element>
+
+    <complexType name="GetContentTypeVersionOutputType">
+    	<sequence>
+    		<element name="Content-Type" type="string" minOccurs="0"
+    			maxOccurs="1">
+    		</element>
+    		<element name="Content-Type-Version" type="string" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <element name="GetContentTypeVersionOutput" type="tns:GetContentTypeVersionOutputType"></element>
+</schema>

@@ -1,0 +1,151 @@
+!SESSION 2017-03-22 21:00:26.429 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_121
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  -showlocation
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -showlocation
+
+!ENTRY com.tibco.bw.sharedresource.jdbc.driver.template 4 0 2017-03-22 21:00:30.202
+!MESSAGE [SCR] Component definition XMLs not found in bundle com.tibco.bw.sharedresource.jdbc.driver.template. The component header value is OSGI-INF/*.xml
+
+!ENTRY com.tibco.bw.sharedresource.jdbc.driver.template 4 0 2017-03-22 21:00:30.206
+!MESSAGE [SCR] Component definition XMLs not found in bundle com.tibco.bw.sharedresource.jdbc.driver.template. The component header value is OSGI-INF/*.xml
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.803
+!MESSAGE Both 'com.tibco.amf.sharedresource.model.transport.eclipse' and 'com.tibco.amf.sharedresource.model.transport.eclipse' register a package for 'http://xsd.tns.tibco.com/amf/models/sharedresource/httpconnector'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.811
+!MESSAGE Both 'com.tibco.bw.core.model.eclipse' and 'com.tibco.bw.core.model.eclipse' register a package for 'http://ns.tibco.com/bw/core/internalactivity'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.816
+!MESSAGE Both 'com.tibco.bw.sharedresource.http.model' and 'com.tibco.bw.sharedresource.http.model' register a package for 'http://xsd.tns.tibco.com/bw/models/sharedresource/httpclient'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.818
+!MESSAGE Both 'com.tibco.amf.sharedresource.model.data.eclipse' and 'com.tibco.bw.sharedresource.jdbc.model' register a package for 'http://xsd.tns.tibco.com/amf/models/sharedresource/jdbc'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.823
+!MESSAGE Both 'com.tibco.amf.sca.model.eclipse' and 'com.tibco.bw.sharedresource.ws.policy.model' register a package for 'http://schemas.xmlsoap.org/ws/2004/09/policy'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.825
+!MESSAGE Both 'com.tibco.amf.wsdl.extensions.eclipse' and 'com.tibco.bw.wsdl.extensions' register a package for 'http://xsd.tns.tibco.com/wsdl/models/extensions/soap/tibcojms'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.827
+!MESSAGE Both 'com.tibco.amf.wsdl.extensions.eclipse' and 'com.tibco.bw.wsdl.extensions' register a package for 'http://xsd.tns.tibco.com/wsdl/models/soap12'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.849
+!MESSAGE Both 'com.tibco.bw.sharedresource.identity.model' and 'com.tibco.bw.sharedresource.ws.policy.model' register an extension parser for 'policy'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.851
+!MESSAGE Both 'com.tibco.bw.sharedresource.trinity.securityprovider.model' and 'com.tibco.trinity.securityprovider.model.eclipse' register an extension parser for 'auth'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.854
+!MESSAGE Both 'com.tibco.bw.sharedresource.trinity.securityprovider.model' and 'com.tibco.trinity.securityprovider.model.eclipse' register an extension parser for 'identity'
+
+!ENTRY org.eclipse.emf.ecore 2 0 2017-03-22 21:00:43.856
+!MESSAGE Both 'com.tibco.bw.sharedresource.trinity.securityprovider.model' and 'com.tibco.trinity.securityprovider.model.eclipse' register an extension parser for 'userid'
+
+!ENTRY org.eclipse.ui 2 0 2017-03-22 21:00:44.872
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:44.872
+!MESSAGE Commands should really have a category: plug-in='com.tibco.amf.tools.migration2x.ui', id='com.tibco.amf.tools.migration2x.ui.migrateTo3xCommand', categoryId='com.tibco.amf.tools.composite.resources.ui.TasksCategory'
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:44.872
+!MESSAGE Commands should really have a category: plug-in='com.tibco.amf.tools.packager.ui', id='com.tibco.amf.tools.packager.ui.createDaa.command', categoryId='tibco.category.soa_platform'
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:44.872
+!MESSAGE Commands should really have a category: plug-in='com.tibco.bw.binding.soap.axis2.design', id='com.tibco.bw.binding.soap.axis2.design.generateWSDL', categoryId='tibco.category.soa_platform'
+
+!ENTRY org.eclipse.ui 2 0 2017-03-22 21:00:46.348
+!MESSAGE Warnings while parsing the commands from the 'org.eclipse.ui.commands' and 'org.eclipse.ui.actionDefinitions' extension points.
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:46.349
+!MESSAGE Commands should really have a category: plug-in='com.tibco.amf.tools.migration2x.ui', id='com.tibco.amf.tools.migration2x.ui.migrateTo3xCommand', categoryId='com.tibco.amf.tools.composite.resources.ui.TasksCategory'
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:46.349
+!MESSAGE Commands should really have a category: plug-in='com.tibco.amf.tools.packager.ui', id='com.tibco.amf.tools.packager.ui.createDaa.command', categoryId='tibco.category.soa_platform'
+!SUBENTRY 1 org.eclipse.ui 2 0 2017-03-22 21:00:46.349
+!MESSAGE Commands should really have a category: plug-in='com.tibco.bw.binding.soap.axis2.design', id='com.tibco.bw.binding.soap.axis2.design.generateWSDL', categoryId='tibco.category.soa_platform'
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.208
+!MESSAGE Constraint "com.tibco.amf.design.sr.core.internal.validation.constraints.SharedResourceNotInWorkspace" could not find target EMF type "Property."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.279
+!MESSAGE Constraint "com.tibco.bw.sharedresource.http.design.com.tibco.amf.design.sr.transport.http.ssl.namedResourceReferenceValueNotEmpty" could not find target EMF type "NamedResourceReference."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.367
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.HasOneStoreConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.369
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.KeyAliasNotNullConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.370
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.KeyPasswordNotNullConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.371
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.trust.editor.constraint" could not find target EMF type "TrustConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.383
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.trinity.ssl.editor.invalid.remote.host.constraint" could not find target EMF type "SSLServerConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.386
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.bw.sharedresource.trinity.ssl.client.editor.trust.namedResourceReferenceValueNotEmpty" could not find target EMF type "NamedResourceReference."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.387
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.bw.sharedresource.trinity.ssl.client.editor.subject.namedResourceReferenceValueNotEmpty" could not find target EMF type "NamedResourceReference."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.438
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.bw.sharedresource.trinity.ssl.server.editor.trust.namedResourceReferenceValueNotEmpty" could not find target EMF type "NamedResourceReference."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-22 21:01:02.443
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.bw.sharedresource.trinity.ssl.server.editor.subject.namedResourceReferenceValueNotEmpty" could not find target EMF type "NamedResourceReference."
+
+!ENTRY com.tibco.xpd.fragments 4 0 2017-03-22 21:01:02.532
+!MESSAGE com.tibco.xpd.fragments.internal.FragmentsManager$5.run(FragmentsManager.java:787) FragmentsManager.initialize(): No root categories found!!!
+
+!ENTRY com.tibco.bw.core.design.process.editor 1 0 2017-03-22 21:01:03.419
+!MESSAGE ".com.tibco.bw.rad/BWApplication.launch" file is synchronized.
+
+!ENTRY com.tibco.bw.core.design.process.editor 1 0 2017-03-22 21:01:03.456
+!MESSAGE ".com.tibco.bw.rad/runtime.target" file is synchronized.
+
+!ENTRY com.tibco.xpd.resources 2 0 2017-03-22 21:02:22.791
+!MESSAGE Indexer global.references.index has taken longer than 500ms (2025 ms) for 'L/FhirCommonLIB/Schemas/dstu2/fhir-single.xsd'.
+
+!ENTRY org.eclipse.bpel.validator 1 0 2017-03-22 21:02:31.882
+!MESSAGE Validator Startup 64ms
+
+!ENTRY org.eclipse.emf.validation 2 80 2017-03-22 21:03:09.923
+!MESSAGE The constraint "com.tibco.bw.palette.java.design.common.constraint.JavaMethod.validJavaMethod" is disabled.  It will not be evaluated.
+!STACK 0
+java.lang.NullPointerException
+	at com.tibco.bw.palette.java.design.common.JavaBaseActivityHelper.getClassLoader(JavaBaseActivityHelper.java:121)
+	at com.tibco.bw.palette.java.design.common.constraint.JavaMethodValidation.super(JavaMethodValidation.java:58)
+	at com.tibco.bw.palette.java.design.common.constraint.JavaMethodValidation.validate(JavaMethodValidation.java:44)
+	at org.eclipse.emf.validation.internal.util.JavaConstraintParser$ConstraintAdapter.validate(JavaConstraintParser.java:80)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.evaluateConstraints(AbstractValidator.java:241)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:264)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:211)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.doValidate(BatchValidator.java:149)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.validate(AbstractValidator.java:147)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.validate(AbstractValidator.java:126)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:1)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:208)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:182)
+	at com.tibco.xpd.validation.internal.EMFValidator.o00000(EMFValidator.java:242)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:141)
+	at com.tibco.xpd.validation.internal.engine.ValidationEngine.validate(ValidationEngine.java:268)
+	at com.tibco.xpd.validation.explicit.Validator.super(Validator.java:219)
+	at com.tibco.xpd.validation.explicit.Validator.validate(Validator.java:140)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.validate(ValidationBuilder.java:1125)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.o00000(ValidationBuilder.java:762)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.o00000(ValidationBuilder.java:441)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.build(ValidationBuilder.java:172)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:734)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)

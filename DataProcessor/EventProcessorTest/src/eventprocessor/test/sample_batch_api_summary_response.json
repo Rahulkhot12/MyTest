@@ -1,0 +1,43 @@
+[
+  {
+    "id": 11,
+    "pmTableName": "PP_PROV",
+    "histTableName": "H_PP_PROV",
+    "histId": 123,
+    "eventType": "DATA",
+    "action": "CREATE",
+    "eventSummaryDetails": "foo",
+    "ifGeneratorId": "IF-1",
+    "createTs": 1466714912185,
+    "eveSumRootResources": [
+      {
+        "id": 1,
+        "domain": "PROV",
+        "subDomain": "DEMOGRAPHICS",
+        "euid": "123456789"
+      }
+    ],
+    "eventSummaryDetails":null
+  },
+  {
+    "id": 22,
+    "pmTableName": "PP_PRAC",
+    "histTableName": "H_PP_PRAC",
+    "histId": 456,
+    "eventType": "DATA",
+    "action": "UPDATE",
+    "eventSummaryDetails": "bar",
+    "ifGeneratorId": "IF-2",
+    "createTs": 1466714912189,
+    "eveSumRootResources": [
+      {
+        "id": 1,
+        "domain": "PRAC",
+        "subDomain": "DEMOGRAPHICS",
+        "euid": "123456790"
+      }
+    ],
+    "eventSummaryDetails":null
+  }
+  
+]

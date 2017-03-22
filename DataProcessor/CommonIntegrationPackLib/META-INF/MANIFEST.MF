@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: CommonIntegrationPackLib
+Require-Bundle: AdapterCommonLib;bundle-version="1.0.0",FhirCommonLIB;
+ bundle-version="1.0.5"
+TIBCO-BW-SharedModule: META-INF/module.bwm
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.model; filter:="(name=bwext)",com.tib
+ co.bw.module; filter:="(&(name=AdapterCommonLib)(version=1.0.0))",com
+ .tibco.bw.module; filter:="(&(name=FhirCommonLIB)(version=1.0.5))",co
+ m.tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibco.b
+ w.palette; filter:="(name=bw.jms)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.3 V23 2016-08-10
+Provide-Capability: com.tibco.bw.module; name="CommonIntegrationPackLi
+ b"; version:Version="1.0.0",com.tibco.bw.schemas; ns="http://mhs.mcke
+ sson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg",co
+ m.tibco.bw.schemas; ns="http://mhs.mckesson.com/commonintegrationpack
+ lib/GetContentTypeVersionMsg",com.tibco.bw.schemas; ns="http://mhs.mc
+ kesson.com/commonintegrationpacklib/GetMHSDomainMsg",com.tibco.bw.sch
+ emas; ns="http://mhs.mckesson.com/commonintegrationpacklib/GetMHSSubD
+ omainsMsg",com.tibco.bw.schemas; ns="http://www.example.com/namespace
+ s/tns/1477927073000",com.tibco.bw.schemas; ns="http://www.example.com
+ /namespaces/tns/1478352089934",com.tibco.bw.schemas; ns="http://www.e
+ xample.com/namespaces/tns/1478365699137",com.tibco.bw.schemas; ns="ht
+ tp://www.example.org/Subdomains",com.tibco.bw.processes; name="common
+ integrationpacklib"
+Bundle-Name: CommonIntegrationPackLib Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

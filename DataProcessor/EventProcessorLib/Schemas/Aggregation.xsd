@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:tibex="http://www.tibco.com/bpel/2007/extensions" xmlns:tns="http://www.example.com/namespaces/tns/1464964971107" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.example.com/namespaces/tns/1464964971107">
+  <xsd:element name="Aggregation">
+    <xsd:complexType>
+      <xsd:sequence>
+      	<xsd:element maxOccurs="unbounded" minOccurs="0"
+      		name="subdomain" type="xsd:string" />
+      	<xsd:element name="domain" type="xsd:string" minOccurs="0"
+      		maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="eventhandler" type="xsd:string"
+      		minOccurs="0" maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="messagetype" type="xsd:string"
+      		minOccurs="0" maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="eventaction" type="xsd:string"
+      		minOccurs="0" maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="euid" type="xsd:string" minOccurs="0"
+      		maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="table" type="xsd:string" minOccurs="0"
+      		maxOccurs="1">
+      	</xsd:element>
+      	<xsd:element name="batchid" type="xsd:string" minOccurs="0" maxOccurs="1"></xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

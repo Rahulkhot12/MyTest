@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndi:namedResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://xsd.tns.tibco.com/amf/models/sharedresource/jdbc" xmlns:jndi="http://xsd.tns.tibco.com/amf/models/sharedresource/jndi" xmlns:subject="http://xsd.tns.tibco.com/trinity/models/identity/subject" xmi:id="_TvBeYGBzEeapPe4DTUCRlw" name="adapterCommon.JDBCConnectionResource" type="jdbc:JdbcDataSource">
+  <jndi:description>Oracle JDBCConnectionResource</jndi:description>
+  <jndi:reference xmi:id="_Tv5oIGBzEeapPe4DTUCRlw" key="subjectJndiName" type="subject:SubjectConfiguration" value=""/>
+  <jndi:configuration xsi:type="jdbc:JdbcDataSource" xmi:id="_Tv5oIWBzEeapPe4DTUCRlw">
+    <substitutionBindings xmi:id="_kf4uQJb_EeaLk-ofb8rC9w" template="username" propName="db.user"/>
+    <substitutionBindings xmi:id="_rhYloJcAEeaLk-ofb8rC9w" template="password" propName="db.pwd"/>
+    <substitutionBindings xmi:id="_ClKDQJcBEeaLk-ofb8rC9w" template="maxConnections" propName="db.max.connections"/>
+    <connectionConfig xsi:type="jdbc:NonXaConnection" xmi:id="_TwEnQGBzEeapPe4DTUCRlw">
+      <substitutionBindings xmi:id="_NnVpMJb_EeaLk-ofb8rC9w" template="dbURL" propName="db.connect.uri"/>
+      <substitutionBindings xmi:id="_dU68YJb_EeaLk-ofb8rC9w" template="jdbcDriver" propName="db.driver"/>
+      <substitutionBindings xmi:id="_KzdhcJcBEeaLk-ofb8rC9w" template="loginTimeout" propName="db.login.timeout.ms"/>
+    </connectionConfig>
+    <connectionProperties xmi:id="_KpJZwJb_EeaLk-ofb8rC9w" key="jarFile" value="ojdbc"/>
+  </jndi:configuration>
+</jndi:namedResource>

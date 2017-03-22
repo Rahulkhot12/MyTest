@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndi:namedResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://xsd.tns.tibco.com/bw/models/sharedresource/jms" xmlns:jndi="http://xsd.tns.tibco.com/amf/models/sharedresource/jndi" xmi:id="_FJmdIVAMEeafcpYy_wnq5Q" name="adapterCommon.JMSCommonConnection" type="jms:JMSConnectionFactory">
+  <jndi:description>Common JMS Connections</jndi:description>
+  <jndi:reference xmi:id="_FJnEMFAMEeafcpYy_wnq5Q" key="jndiConnectionJNDIName" type="jms:JNDIConnection" value="adapterCommon.EMSCommonJNDIConfiguration"/>
+  <jndi:configuration xsi:type="jms:JNDIConnectionFactory" xmi:id="_FJnEMVAMEeafcpYy_wnq5Q" factoryType="Queue/Topic" jndiName="COMMON_QUEUE_CONN_FACTORY " topicFactoryJNDIName="COMMON_TOPIC_CONN_FACTORY ">
+    <substitutionBindings xmi:id="_W7oscFJeEeaugsWPki1a-w" template="jndiName" propName="COMMON_QUEUE_CONN_FACTORY"/>
+    <substitutionBindings xmi:id="_df_xUFJeEeaugsWPki1a-w" template="topicFactoryJNDIName" propName="COMMON_TOPIC_CONN_FACTORY"/>
+    <userCredentials xmi:id="_ZzYLcFA2EeaPRvLiQSfrNg">
+      <substitutionBindings xmi:id="_aHCuUFA2EeaPRvLiQSfrNg" template="username" propName="COMMON_JMS_USER"/>
+      <substitutionBindings xmi:id="_aU2g0FA2EeaPRvLiQSfrNg" template="password" propName="COMMON_JMS_PASSWORD"/>
+    </userCredentials>
+  </jndi:configuration>
+</jndi:namedResource>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.mckesson.mhs.interop</groupId>
+    <artifactId>FhirCommonLIB.application.parent</artifactId>
+    <version>1.0.5-SNAPSHOT</version>
+  </parent>
+  <artifactId>FhirCommonLIBTest</artifactId>
+  <packaging>bwmodule</packaging>
+  <properties>
+    <maven.jar.classifier>bw-appmodule</maven.jar.classifier>
+  </properties>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+      </resource>
+    </resources>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.mckesson.mhs.interop</groupId>
+      <artifactId>FhirCommonLIB</artifactId>
+      <classifier>bw-sharedmodule</classifier>
+      <!-- FhirCommonLIB dependencies are already packaged within FhirCommonLIB.jar -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.mckesson.mhs.interop</groupId>
+      <artifactId>TestCommonLIB</artifactId>
+      <classifier>bw-sharedmodule</classifier>
+      <!-- TestCommonLIB dependencies are already packaged within TestCommonLIB.jar -->
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>ca.uhn.hapi.fhir</groupId>
+      <artifactId>hapi-fhir-structures-dstu2</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

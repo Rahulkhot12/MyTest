@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://mhs.mckesson.com/AdministrativeMsg" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://mhs.mckesson.com/AdministrativeMsg" 
+xmlns:jwt="http://mckesson.com/mhs/adapter/jwt/GenerateJWTToken" xmlns:cache="http://mckesson.com/mhs/adapter/cache/CacheClear">
+
+<xsd:import namespace="http://mckesson.com/mhs/adapter/jwt/GenerateJWTToken" schemaLocation="GenerateJWTToken.xsd"/>
+<xsd:import namespace="http://mckesson.com/mhs/adapter/cache/CacheClear" schemaLocation="CacheClear.xsd"/>
+
+	<xsd:complexType name="inputDetails">
+	    <xsd:choice>
+			<xsd:element ref="jwt:GenerateJWTTokenInput" maxOccurs="1" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Pass in the required data that is necessary to generate a JWT Token
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="cache:CacheClearInput" maxOccurs="1" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Pass in the required data that is necessary to clear cache
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+	     </xsd:choice>
+	 </xsd:complexType>
+	 
+	 <xsd:complexType name="outputDetails">
+	    <xsd:choice>
+			<xsd:element ref="jwt:GenerateJWTTokenOutput" maxOccurs="1" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Pass in the required data that is necessary to generate a JWT Token
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element ref="cache:CacheClearOutput" maxOccurs="1" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>
+						Pass in the required data that is necessary to generate a JWT Token
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+	     </xsd:choice>
+	 </xsd:complexType>
+	 
+	 <xsd:complexType name="AdministrativeInputMsgType">
+    	<xsd:sequence>
+    		<xsd:element name="correlationID" type="string" maxOccurs="1"
+    			minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					This is the primary correlation ID to be used
+    					across related AdministrativeMsg's as a transaction
+    					traverses distributed tiers within MHS systems.
+    					It will be used to trace/correlated activities
+    					for a given transaction flow.
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="tenantID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					MHS identifier for customer organization
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="subTenantID" type="string" maxOccurs="1"
+    			minOccurs="0">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					MHS identifier for group within customer
+    					organization.
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="source" type="string"
+    			maxOccurs="1" minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Information about the source of this
+    					AdministrativeMsg.
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="timestamp" type="dateTime" maxOccurs="1"
+    			minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Timestamp from the source tier (the tier
+    					generating this AdministrativeMsg).. Must have
+    					milliseconds resolution.
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="command" maxOccurs="1" minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Unique command that is issued to the Admin Service
+
+    					Examples: - CACHE_CLEAR, GENERATE_JWT_TOKEN
+    				</xsd:documentation>
+    			</xsd:annotation>
+    			<xsd:simpleType>
+    				<xsd:restriction base="string">
+    					<xsd:enumeration value="CACHE_CLEAR"></xsd:enumeration>
+    					<xsd:enumeration value="GENERATE_JWT_TOKEN"></xsd:enumeration>
+    				</xsd:restriction>
+    			</xsd:simpleType>
+    		</xsd:element>
+    		<xsd:element name="details" type="tns:inputDetails" maxOccurs="1" minOccurs="0">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Pass in the details related to the respective command 
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="AdministrativeOutputMsgType">
+    	<xsd:sequence>
+    		<xsd:element name="correlationID" type="string" maxOccurs="1" minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					This is the primary correlation ID to be used
+    					across related AdministrativeMsg's as a transaction
+    					traverses distributed tiers within MHS systems.
+    					It will be used to trace/correlated activities
+    					for a given transaction flow.
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="executionTimestamp" type="dateTime" maxOccurs="1"
+    			minOccurs="1">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Timestamp when the command was executed
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="details" type="tns:outputDetails" maxOccurs="1" minOccurs="0">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Pass in the required data to clear out a type of cache
+    				</xsd:documentation>
+    			</xsd:annotation>
+    		</xsd:element>
+    		<xsd:element name="status" maxOccurs="1" minOccurs="0">
+    			<xsd:annotation>
+    				<xsd:documentation>
+    					Describes the status of the response of Admin
+    					Request
+    				</xsd:documentation>
+    			</xsd:annotation>
+    			<xsd:simpleType>
+    				<xsd:restriction base="xsd:string">
+    					<xsd:enumeration value="SUCCESS"></xsd:enumeration>
+    					<xsd:enumeration value="FAILURE"></xsd:enumeration>
+    				</xsd:restriction>
+    			</xsd:simpleType>
+    		</xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="AdministrativeInputMsg" type="tns:AdministrativeInputMsgType"></xsd:element>
+	<xsd:element name="AdministrativeOutputMsg" type="tns:AdministrativeOutputMsgType"></xsd:element>
+
+</schema>

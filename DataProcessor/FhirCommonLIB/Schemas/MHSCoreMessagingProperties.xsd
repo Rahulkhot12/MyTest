@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties" xmlns:tns="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties" elementFormDefault="qualified">
+<complexType name="jmsAppPropType">
+        <annotation>
+        	<documentation>unix timestamp (milliseconds since epoch, 1970)..</documentation>
+        </annotation>
+        <sequence>
+		<element name="MHSMessageType" type="string" maxOccurs="1"
+			minOccurs="1">
+		</element>
+		<element name="MHSTenantID" type="string" maxOccurs="1"
+			minOccurs="1">
+		</element>
+		<element name="MHSSubTenantID" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="Content-Type" type="string" maxOccurs="1"
+			minOccurs="1">
+		</element>
+		<element name="Content-Type-Version" type="string" maxOccurs="1"
+			minOccurs="1">
+		</element>
+		<element name="EVT_MHSResourceDomain" type="string"
+			maxOccurs="1" minOccurs="0">
+		</element>
+		<element name="EVT_MHSResourceSubDomain" type="string"
+			maxOccurs="1" minOccurs="0">
+		</element>
+		<element name="EVT_MHSEventAction" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="FHIRAction" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="FHIRResourceType" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="FHIRResourceIdentifier" type="string"
+			maxOccurs="1" minOccurs="0">
+		</element>
+		<element name="FHIRResourceLastUpdatedTimestamp" type="long" minOccurs="0" maxOccurs="1"></element>
+		<element name="FHIRFullUrl" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="FHIROperation" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+		<element name="AuthxToken" type="string" maxOccurs="1"
+			minOccurs="0">
+		</element>
+	</sequence></complexType>
+</schema>

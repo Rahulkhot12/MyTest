@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jndi:namedResource xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jms="http://xsd.tns.tibco.com/bw/models/sharedresource/jms" xmlns:jndi="http://xsd.tns.tibco.com/amf/models/sharedresource/jndi" xmi:id="_yi-zAc50EeWnjqa5XHObOg" name="fhircommonlibtest.EMSDefaultJNDIConfiguration" type="jms:JNDIConnection">
+  <jndi:configuration xsi:type="jms:JNDIConnectionConfiguration" xmi:id="_yi-zAs50EeWnjqa5XHObOg" initialContextFactory="FHIR_COMMON_JNDI_Initial_Context_Factory " providerUrl="FHIR_COMMON_JNDI_Naming_Provider_URL ">
+    <substitutionBindings xmi:id="_b6QT8M93EeWCJbcGprFkow" template="initialContextFactory" propName="FHIR_COMMON_JNDI_Initial_Context_Factory"/>
+    <substitutionBindings xmi:id="_mN4f4M93EeWCJbcGprFkow" template="providerUrl" propName="FHIR_COMMON_JNDI_Naming_Provider_URL"/>
+    <userCredentials xmi:id="_ktY-UER3EeafWJ0MSBf5cQ">
+      <substitutionBindings xmi:id="_lLPX8ER3EeafWJ0MSBf5cQ" template="username" propName="FHIR_COMMON_JNDI_USER"/>
+      <substitutionBindings xmi:id="_lYTjkER3EeafWJ0MSBf5cQ" template="password" propName="FHIR_COMMON_JNDI_PASSWORD"/>
+    </userCredentials>
+  </jndi:configuration>
+</jndi:namedResource>

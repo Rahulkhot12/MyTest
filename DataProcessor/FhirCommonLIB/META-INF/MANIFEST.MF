@@ -1,0 +1,92 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: FhirCommonLIB Module
+Bundle-SymbolicName: FhirCommonLIB
+Bundle-Version: 1.0.5.qualifier
+Bundle-ClassPath: .,
+ lib/hapi-fhir-structures-dstu2-1.6.jar,
+ lib/hapi-fhir-base-1.6.jar,
+ lib/javax.json-api-1.0.jar,
+ lib/javax.json-1.0.4.jar,
+ lib/woodstox-core-asl-4.4.1.jar,
+ lib/stax-api-1.0-2.jar,
+ lib/stax2-api-3.1.4.jar,
+ lib/commons-lang3-3.4.jar,
+ lib/commons-codec-1.10.jar,
+ lib/commons-io-2.4.jar,
+ lib/httpclient-4.5.1.jar,
+ lib/httpcore-4.4.4.jar,
+ lib/FhirResourceValidator-1.0.4.jar,
+ lib/slf4j-api-1.7.12.jar,
+ lib/jcl-over-slf4j-1.7.12.jar,
+ lib/logback-classic-1.1.5.jar,
+ lib/logback-core-1.1.5.jar,
+ lib/hapi-fhir-structures-dstu3-1.6.jar,
+ lib/xpp3_min-1.1.4c.jar,
+ lib/Saxon-HE-9.6.0-4.jar,
+ lib/gson-2.3.1.jar,
+ lib/hapi-fhir-structures-hl7org-dstu2-1.6.jar,
+ lib/hapi-fhir-validation-resources-dstu2-1.6.jar,
+ lib/phloc-schematron-2.7.1.jar,
+ lib/phloc-commons-4.4.4.jar,
+ lib/annotations-2.0.3.jar,
+ lib/MhsFhirDefs-0.4.0.jar
+Bundle-Vendor: TIBCO Software Inc.
+Export-Package: ca.uhn.fhir.context,
+ ca.uhn.fhir.model.dstu2.resource,
+ ca.uhn.fhir.parser,
+ com.mckesson.mhs.fhir,
+ org.hl7.fhir.instance.model.api
+Require-Capability: com.tibco.bw.model; filter:="(name=bwext)",
+ com.tibco.bw.palette; filter:="(name=bw.generalactivities)",
+ com.tibco.bw.palette; filter:="(name=bw.file)",
+ com.tibco.bw.palette; filter:="(name=bw.java)",
+ com.tibco.bw.palette; filter:="(name=bw.xml)"
+TIBCO-BW-Version: 6.3.1 V12 2016-01-27
+Import-Package: com.ctc.wstx.api;version="3.2.300",
+ com.ctc.wstx.cfg;version="3.2.300",
+ com.ctc.wstx.compat;version="3.2.300",
+ com.ctc.wstx.dom;version="3.2.300",
+ com.ctc.wstx.dtd;version="3.2.300",
+ com.ctc.wstx.ent;version="3.2.300",
+ com.ctc.wstx.evt;version="3.2.300",
+ com.ctc.wstx.exc;version="3.2.300",
+ com.ctc.wstx.io;version="3.2.300",
+ com.ctc.wstx.msv;version="3.2.300",
+ com.ctc.wstx.sax;version="3.2.300",
+ com.ctc.wstx.sr;version="3.2.300",
+ com.ctc.wstx.stax;version="3.2.300",
+ com.ctc.wstx.sw;version="3.2.300",
+ com.ctc.wstx.util;version="3.2.300",
+ javax.xml.parsers;version="1.14.0",
+ javax.xml.stream;version="1.12.0",
+ javax.xml.stream.events;version="1.12.0",
+ javax.xml.stream.util;version="1.12.0",
+ javax.xml.transform;version="1.14.0",
+ javax.xml.transform.dom;version="1.14.0",
+ javax.xml.transform.sax;version="1.14.0",
+ javax.xml.transform.stream;version="1.14.0",
+ javax.xml.validation;version="1.14.0",
+ org.codehaus.stax2;version="3.2.300",
+ org.codehaus.stax2.evt;version="3.2.300",
+ org.codehaus.stax2.io;version="3.2.300",
+ org.codehaus.stax2.ri;version="3.2.300",
+ org.codehaus.stax2.validation;version="3.2.300"
+Provide-Capability: com.tibco.bw.module; name="FhirCommonLIB"; version:Version="1.0.5",
+ com.tibco.bw.schemas; ns="http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties",
+ com.tibco.bw.schemas; ns="http://hl7.org/fhir",
+ com.tibco.bw.schemas; ns="http://mckesson.com/mhs/fhir/GimmeBoth",
+ com.tibco.bw.schemas; ns="http://mckesson.com/mhs/fhir/SelectFhirFormat",
+ com.tibco.bw.schemas; ns="http://www.example.com/namespaces/tns/1463060588583",
+ com.tibco.bw.schemas; ns="http://www.example.org/BundleBuilderInput",
+ com.tibco.bw.schemas; ns="http://www.example.org/QueryBuilderInput",
+ com.tibco.bw.schemas; ns="http://www.example.org/FhirValidator",
+ com.tibco.bw.processes; name="fhircommonlib.bundles",
+ com.tibco.bw.processes; name="fhircommonlib.format",
+ com.tibco.bw.processes; name="fhircommonlib.bundles.read",
+ com.tibco.bw.processes; name="fhircommonlib.validation"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+TIBCO-BW-SharedModule: META-INF/module.bwm

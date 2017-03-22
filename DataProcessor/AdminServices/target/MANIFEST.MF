@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: AdminServices
+Require-Bundle: AdminServicesLib;bundle-version="1.0.0", AdapterCommon
+ Lib;bundle-version="1.0.0"
+Bundle-ManifestVersion: 2
+Bundle-Vendor: TIBCO Software Inc.
+TIBCO-BW-ModuleSharedVariables: META-INF/module.msv
+Require-Capability: com.tibco.bw.module; filter:="(&(name=AdminService
+ sLib)(version=1.0.0))",com.tibco.bw.module; filter:="(&(name=AdapterC
+ ommonLib)(version=1.0.0))",com.tibco.bw.model; filter:="(name=bwext)"
+ ,com.tibco.bw.palette; filter:="(name=bw.generalactivities)",com.tibc
+ o.bw.palette; filter:="(name=bw.jms)",com.tibco.bw.palette; filter:="
+ (name=bw.xml)"
+TIBCO-BW-ConfigProfile: META-INF/default.substvar
+TIBCO-BW-Version: 6.3.2 V30 2016-04-28
+Bundle-Name: AdminServices Module
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+TIBCO-BW-ApplicationModule: META-INF/module.bwm
+TIBCO-BW-JobSharedVariables: META-INF/module.jsv
+

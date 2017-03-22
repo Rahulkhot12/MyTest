@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ASCII"?>
+<annox:package xmlns:annox="http://annox.dev.java.net" xmlns:jaxb="http://annox.dev.java.net/javax.xml.bind.annotation">
+  <annox:class name="String">
+    <jaxb:XmlAccessorType value="NONE"/>
+    <jaxb:XmlType name="StringType" propOrder="Bytes Empty "/>
+    <jaxb:XmlRootElement name="String" namespace="www.tibco.com/plugin/java/xmlSchema/java.lang.String"/>
+    <annox:field name="Bytes">
+      <jaxb:XmlElement name="Bytes" namespace="www.tibco.com/plugin/java/xmlSchema/java.lang.String"/>
+    </annox:field>
+    <annox:field name="Empty">
+      <jaxb:XmlElement name="Empty" namespace="www.tibco.com/plugin/java/xmlSchema/java.lang.String" required="false" type="java.lang.Boolean"/>
+    </annox:field>
+  </annox:class>
+  <jaxb:XmlSchema elementFormDefault="QUALIFIED" namespace="www.tibco.com/plugin/java/xmlSchema/java.lang.String"/>
+</annox:package>

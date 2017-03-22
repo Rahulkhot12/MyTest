@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpws:process exitOnStandardFault="no"
+    name="handler.CoreCorporationEventHandler" suppressJoinFailure="yes"
+    targetNamespace="http://xmlns.example.com/20161025150445"
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:info="http://www.tibco.com/bw/process/info"
+    xmlns:ns="http://www.tibco.com/pe/EngineTypes"
+    xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output"
+    xmlns:ns1="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg"
+    xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/jms+eca0482c-6930-402b-85cb-bd9961727e80+input"
+    xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/jms"
+    xmlns:ns4="http://mhs.mckesson.com/OperationalMsg"
+    xmlns:ns5="http://www.tibco.com/pe/WriteToLogActivitySchema"
+    xmlns:ns6="http://www.tibco.com/namespaces/tnt/plugins/jms+88184ddb-aef2-4ee9-88cb-85baaf85591c+input"
+    xmlns:ns7="http://www.tibco.com/namespaces/tnt/plugins/renderxml"
+    xmlns:ns8="http://schemas.tibco.com/bw/plugins/basic/6.0/Exceptions"
+    xmlns:ns9="http://www.example.com/namespaces/tns/1477927073000"
+    xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+    xmlns:sca-bpel="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"
+    xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"
+    xmlns:tibprop="http://ns.tibco.com/bw/property" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <tibex:Types>
+        <xs:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.tibco.com/pe/EngineTypes"
+            xmlns:tns="http://www.tibco.com/pe/EngineTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ErrorReport">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="FullClass" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Class" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="FaultDetail">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ActivityName" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ProcessContext">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="JobId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessInstanceId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0"
+                        name="CustomJobId" type="xs:string"/>
+                    <!--xs:element name="RestartedFromCheckpoint" form="unqualified" block="extension restriction substitution" type="xs:boolean"/-->
+                    <!--xs:element minOccurs="0" maxOccurs="unbounded" name="TrackingInfo" form="unqualified" block="extension restriction substitution" type="xs:string"/-->
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="anydata">
+                <xs:sequence>
+                    <xs:any namespace="##any" processContents="lax"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ErrorReport" type="tns:ErrorReport"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="FaultDetail" type="tns:FaultDetail"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ProcessContext" type="tns:ProcessContext"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="CorrelationValue" type="xs:string"/>
+        </xs:schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="unqualified"
+            targetNamespace="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions"
+            version="" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions">
+            <complexType name="ActivityExceptionType">
+                <sequence>
+                    <element name="msg" type="string"/>
+                    <element minOccurs="0" name="msgCode" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="ActivityException" type="tns:ActivityExceptionType"/>
+            <complexType name="ActivityTimedOutExceptionType">
+                <complexContent>
+                    <extension base="tns:ActivityExceptionType"/>
+                </complexContent>
+            </complexType>
+            <element name="ActivityTimedOutException" type="tns:ActivityTimedOutExceptionType"/>
+        </schema>
+        <xsd:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output"
+            version="0.1"
+            xmlns="http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:complexType name="ActivityOutput">
+                <xsd:sequence>
+                    <xsd:element name="MessageID" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <!-- awagle addition -->
+            <xsd:complexType name="JMSTransmitInputSchemaType">
+                <xsd:sequence>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="destination" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="replyTo" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSExpiration" type="xsd:int"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSPriority" type="xsd:int"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSDeliveryMode" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSCorrelationID" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSType" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="JMSProperties" type="JmsTransmitProperties"/>
+                    <xsd:element form="unqualified" minOccurs="1"
+                        name="Body" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="DynamicProperties" type="JmsDynamicProperties"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsTransmitProperties">
+                <xsd:sequence>
+                    <!-- these two are actually useful and used (but group seq can't be set) -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXGroupID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXGroupSeq" type="xsd:int"/>
+                    <!-- tibco specific
+      <xsd:element name="JMS_TIBCO_MSG_EXT" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="JMS_TIBCO_COMPRESS" type="xsd:boolean" minOccurs="0" maxOccurs="1" />
+      <! these two are TNT-specific, supporting the XML decoding
+      <xsd:element name="TIBCO_TNT_schema_reference" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="TIBCO_TNT_root_element" type="xsd:string" minOccurs="0" maxOccurs="1" />
+      -->
+                    <!-- all other properties, vendor or application defined, in a standard format -->
+                    <!-- <xsd:element name="JMS_VendorDefined" type="typed-name-value-pair" minOccurs="0" maxOccurs="unbounded" />  -->
+                    <!-- <xsd:element name="JMS_ApplicationDefined" type="typed-name-value-pair" minOccurs="0" maxOccurs="unbounded" />  -->
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsHeaders">
+                <xsd:sequence>
+                    <!-- NOTE: a destination is actually an object.  We are able to treat is as a string
+           because the other items that define a destination (topic vs queue, server/connection)
+           are already defined in the config element.  We do the same for the ReplyTo -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSDestination" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSReplyTo" type="xsd:string"/>
+                    <!-- PROBLEM: this is actually an int, but we're representing it here as a string enumeration,
+  meaning that the app must then translate from the constants in JMS to the 'constants' in the enumeration -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSDeliveryMode" type="JmsDeliveryMode"/>
+                    <!-- actually an int ... -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSMessageID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSTimestamp" type="xsd:long"/>
+                    <!-- Java timestamp, millis from era -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSExpiration" type="xsd:long"/>
+                    <!-- Java timestamp, millis from era -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSRedelivered" type="xsd:boolean"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSPriority" type="JmsPriority"/>
+                    <!-- PROBLEM: correlation id can also be retrieved as a stream of bytes -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSCorrelationID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSType" type="xsd:string"/>
+                    <!-- <xsd:element name="EventSource" type="xsd:string" minOccurs="0" maxOccurs="1" /> -->
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsProperties">
+                <xsd:sequence>
+                    <!-- most of these are not really accessible, easily, but appear on incoming messages -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXUserID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXAppID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXProducerTXID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXConsumerTXID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXRcvTimestamp" type="xsd:long"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXDeliveryCount" type="xsd:int"/>
+                    <!-- these two are actually useful and used (but group seq can't be set) -->
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXGroupID" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="JMSXGroupSeq" type="xsd:int"/>
+                    <!-- tibco specific -->
+                    <!--<xsd:element name="JMS_TIBCO_MSG_EXT" type="xsd:boolean" minOccurs="0" maxOccurs="1" /> -->
+                    <!--<xsd:element name="JMS_TIBCO_COMPRESS" type="xsd:boolean" minOccurs="0" maxOccurs="1" /> -->
+                    <!-- these two are TNT-specific, supporting the XML decoding -->
+                    <!--<xsd:element name="TIBCO_TNT_schema_reference" type="xsd:string" minOccurs="0" maxOccurs="1" /> -->
+                    <!--<xsd:element name="TIBCO_TNT_root_element" type="xsd:string" minOccurs="0" maxOccurs="1" /> -->
+                    <!-- all other properties, vendor or application defined, in a standard format -->
+                    <!-- <xsd:element name="JMS_VendorDefined" type="typed-name-value-pair" minOccurs="0" maxOccurs="unbounded" />  -->
+                    <!-- <xsd:element name="JMS_ApplicationDefined" type="typed-name-value-pair" minOccurs="0" maxOccurs="unbounded" />  -->
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsDynamicProperties">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="unbounded" minOccurs="0"
+                        name="property" type="JmsDynamicProperty"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsDynamicProperty">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1" name="name"
+                        nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="value" nillable="true" type="xsd:string"/>
+                    <xsd:element maxOccurs="1" minOccurs="0" name="type"
+                        nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JmsMessage">
+                <xsd:sequence>
+                    <xsd:element maxOccurs="1" minOccurs="1"
+                        name="MessageHeaders" type="JmsHeaders"/>
+                    <xsd:element maxOccurs="1" minOccurs="0"
+                        name="MessageProperties" type="JmsProperties"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="JMSReceiveSchema">
+                <xsd:sequence>
+                    <xsd:element form="unqualified" name="JMSHeaders" type="JmsHeaders"/>
+                    <xsd:element form="unqualified" name="JMSProperties" type="JmsProperties"/>
+                    <!-- <xsd:element name="OtherProperties" form="unqualified" type="tns:OtherProperties" minOccurs="0"/>-->
+                    <xsd:element form="unqualified" name="Body" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="DynamicProperties" type="JmsDynamicProperties"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="ActivityOutput" type="JMSReceiveSchema"/>
+            <!-- enumerations for various constants -->
+            <xsd:simpleType name="JmsDeliveryMode">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="PERSISTENT"/>
+                    <xsd:enumeration value="NON_PERSISTENT"/>
+                    <xsd:enumeration value="RELIABLE_DELIVERY"/>
+                    <!-- Tibco Enterprise for JMS defined (TibjmsxConst) -->
+                    <!-- <xsd:enumeration value="NO_ACKNOWLEDGE" /> -->
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="JmsPriority">
+                <xsd:restriction base="xsd:int">
+                    <xsd:minInclusive value="0"/>
+                    <xsd:maxInclusive value="9"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:element name="aEmptyOutputClass" type="ActivityOutput"/>
+            <xsd:element name="ActivityInput" type="JMSTransmitInputSchemaType"/>
+            <xsd:complexType name="JMSQueueGetMessageInputSchema">
+                <xsd:sequence>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="destinationQueue" type="xsd:string"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="timeout" type="xsd:long"/>
+                    <xsd:element form="unqualified" minOccurs="0"
+                        name="selector" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="GetJMSActivityInput" type="JMSQueueGetMessageInputSchema"/>
+        </xsd:schema>
+        <wsdl:definitions
+            targetNamespace="http://xmlns.example.com/20161025150445"
+            xmlns:tns="http://xmlns.example.com/20161025150445"
+            xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema"/>
+    </tibex:Types>
+    <tibex:ProcessInfo callable="false" createdBy="efi1fr7"
+        createdOn="Tue Oct 25 15:04:45 IST 2016" description=""
+        modifiers="public" productVersion="6.3.3 V23 2016-08-10"
+        scalable="true" singleton="true" stateless="false" type="IT"/>
+    <tibex:ProcessInterface context="" input="" output=""/>
+    <tibex:ProcessTemplateConfigurations/>
+    <notation:Diagram measurementUnit="Pixel" type="BWProcess"
+        xmlns:bwnotation="http://tns.tibco.com/bw/runtime/BWNotation"
+        xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <children type="2001">
+            <children type="5001"/>
+            <children type="3001">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+                <element href="//0/@process"/>
+            </children>
+            <children type="3002">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3003">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3004">
+                <children type="4018">
+                    <children type="3018">
+                        <children type="4020">
+                            <children type="3020">
+                                <children type="4005">
+                                    <children type="3007">
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.0"/>
+                                    <layoutConstraint
+                                    width="106" x="-103"
+                                    xsi:type="notation:Bounds" y="37"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.1"/>
+                                    <layoutConstraint x="359"
+                                    xsi:type="notation:Bounds" y="37"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2"/>
+                                    <layoutConstraint x="558"
+                                    xsi:type="notation:Bounds" y="37"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.3"/>
+                                    <layoutConstraint x="52"
+                                    xsi:type="notation:Bounds" y="37"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.4"/>
+                                    <layoutConstraint x="790"
+                                    xsi:type="notation:Bounds" y="186"/>
+                                    </children>
+                                    <children type="4002 bw.generalactivities.callprocess">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.5"/>
+                                    <layoutConstraint
+                                    height="40" width="40"
+                                    x="203"
+                                    xsi:type="notation:Bounds" y="186"/>
+                                    </children>
+                                    <styles xsi:type="notation:DrawerStyle"/>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    </children>
+                                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    <layoutConstraint height="500"
+                                    width="1055" xsi:type="notation:Bounds"/>
+                                </children>
+                                <styles xsi:type="notation:SortingStyle"/>
+                                <styles xsi:type="notation:FilteringStyle"/>
+                            </children>
+                            <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                            <styles xsi:type="bwnotation:BackgroundStyle"/>
+                            <styles xsi:type="bwnotation:ResizingStyle"/>
+                            <element href="//0/@process/@activity"/>
+                            <layoutConstraint height="444" width="916" xsi:type="notation:Bounds"/>
+                        </children>
+                        <styles xsi:type="notation:SortingStyle"/>
+                        <styles xsi:type="notation:FilteringStyle"/>
+                        <element href="//0/@process/@activity"/>
+                    </children>
+                    <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                    <element href="//0/@process/@activity"/>
+                    <layoutConstraint height="468" width="916" x="1"
+                        xsi:type="notation:Bounds" y="1"/>
+                </children>
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+                <element href="//0/@process"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ShapeStyle"/>
+            <element href="//0/@process"/>
+            <layoutConstraint height="576" width="1400" xsi:type="notation:Bounds"/>
+        </children>
+        <styles xsi:type="notation:DiagramStyle"/>
+        <element href="//0"/>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.0"/>
+            <bendpoints points="[25, -4, -263, 0]$[264, 0, -24, 4]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.1"/>
+            <bendpoints points="[25, 23, -60, -58]$[61, 58, -24, -23]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.5" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.2"/>
+            <bendpoints points="[25, 0, -128, 0]$[129, 0, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.4" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.3"/>
+            <bendpoints points="[25, 2, -171, 2]$[172, 2, -24, 2]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.5"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.4"/>
+            <bendpoints points="[0, 0, 0, 0]$[0, 0, 0, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.5"
+            target="//@children.0/@children.4/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.4" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.5"/>
+            <bendpoints points="[25, 0, -533, 0]$[534, 0, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+    </notation:Diagram>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg"/>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://mhs.mckesson.com/OperationalMsg"/>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://www.example.com/namespaces/tns/1477927073000"/>
+    <bpws:variables>
+        <bpws:variable element="ns:ProcessContext"
+            name="_processContext" sca-bpel:internal="true"/>
+        <bpws:variable element="ns0:ActivityOutput"
+            name="JMSReceiveMessage1" sca-bpel:internal="true"/>
+        <bpws:variable
+            name="CommonIntegrationPack.corecorporationseventhandler.queue.name"
+            sca-bpel:hotUpdate="false" sca-bpel:privateProperty="true"
+            sca-bpel:property="yes"
+            tibex:propertySource="CommonIntegrationPack.corecorporationseventhandler.queue.name" type="xsd:string"/>
+        <bpws:variable name="pv.bw.process.name" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>CoreCorporationEventHandler</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.scope" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>INTERNAL_SYSTEM</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.codesystem.audit" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>AUDIT</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.codesystem.error" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>ERROR</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.sensitiveinfoflag" type="xsd:boolean">
+            <bpws:from>
+                <bpws:literal>false</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.severity" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>S5</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.processingdomain" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>EVENT_Handler_CoreCorporationEventHandler</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.processingactivity" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>MSG_TRANSLATED</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable name="pv.log.description" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>Success - CoreCorporationEventHandler</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable element="ns4:OperationalMsg"
+            name="CallMsgTranslateFailErrorLog-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns4:OperationalMsg"
+            name="CallMissingRequiredHeaderErrorLog-input" sca-bpel:internal="true"/>
+        <bpws:variable name="pv.log.error.processingActivity" type="xsd:string"/>
+        <bpws:variable element="ns1:TransformerInput"
+            name="CallTranslateCorporationtoFHIR-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns1:TransformerOutput"
+            name="CallTranslateCorporationtoFHIR" sca-bpel:internal="true"/>
+        <bpws:variable name="jmsConnectionProperty"
+            sca-bpel:hotUpdate="false" sca-bpel:privateProperty="true"
+            sca-bpel:property="yes"
+            sca-bpel:sharedResourceType="{http://xsd.tns.tibco.com/bw/models/sharedresource/jms}JMSConnectionFactory" type="xsd:string">
+            <bpws:from>
+                <bpws:literal>adapterCommon.JMSCommonConnection</bpws:literal>
+            </bpws:from>
+        </bpws:variable>
+        <bpws:variable element="ns1:TransformerOutput"
+            name="CallPublishFHIRMessageToTopic-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns4:OperationalMsg"
+            name="CallStartAuditLog-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns4:OperationalMsg"
+            name="CallEndAuditLog-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns9:Element"
+            name="CallValidateRefreshResponse-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns9:status"
+            name="CallValidateRefreshResponse" sca-bpel:internal="true"/>
+    </bpws:variables>
+    <bpws:extensions>
+        <bpws:extension mustUnderstand="no" namespace="http://www.eclipse.org/gmf/runtime/1.0.2/notation"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bw/process/info"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca/200912"/>
+        <bpws:extension mustUnderstand="no" namespace="http://ns.tibco.com/bw/property"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bpel/2007/extensions"/>
+    </bpws:extensions>
+    <bpws:scope name="scope">
+        <bpws:flow name="flow">
+            <bpws:links>
+                <bpws:link
+                    name="CallTranslateCorporationtoFHIRToCallPublishFHIRMessageToTopic" tibex:linkType="SUCCESS"/>
+                <bpws:link name="JMSReceiveMessage1ToCallProcess" tibex:linkType="SUCCESS"/>
+                <bpws:link
+                    name="CallProcessToCallTranslateCorporationtoFHIR" tibex:linkType="SUCCESS"/>
+                <bpws:link
+                    name="CallPublishFHIRMessageToTopicToCallProcess1" tibex:linkType="SUCCESS"/>
+                <bpws:link
+                    name="CallProcessToCallTranslateCorporationtoFHIR1" tibex:linkType="SUCCESSWITHCONDITION"/>
+                <bpws:link
+                    name="CallValidateRefreshResponseToCallEndAuditLog" tibex:linkType="SUCCESSWITHNOCONDITION"/>
+            </bpws:links>
+            <bpws:extensionActivity>
+                <tibex:receiveEvent createInstance="yes"
+                    eventTimeout="60" name="JMSReceiveMessage1" variable="JMSReceiveMessage1">
+                    <bpws:sources>
+                        <bpws:source linkName="JMSReceiveMessage1ToCallProcess"/>
+                    </bpws:sources>
+                    <bpws:correlations/>
+                    <tibex:eventSource>
+                        <bwext:BWActivity
+                            activityTypeID="bw.jms.receive"
+                            version="6.0.0.20132205"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:jms="http://ns.tibco.com/bw/palette/jms" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <attributeBindings
+                                bindingType="moduleProperty"
+                                eAttributeName="destinationName" processProperty="CommonIntegrationPack.corecorporationseventhandler.queue.name"/>
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/palette/jms#//JMSReceiverEventSource"/>
+                                    <value
+                                    connectionReference="jmsConnectionProperty"
+                                    maxSessions="1"
+                                    messagingStyle="Queue"
+                                    receiveTimeout="2" xsi:type="jms:JMSReceiverEventSource"/>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:eventSource>
+                </tibex:receiveEvent>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns=&quot;http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;JMSReceiveMessage1&quot;/>&lt;xsl:template name=&quot;CallTranslateCorporationtoFHIR-input&quot; match=&quot;/&quot;>&lt;tns:TransformerInput>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSTenantID&amp;quot;][1]&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns:FHIRResourceType>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;concat(&amp;quot;PM-CE-&amp;quot;, ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;FHIRResourceIdentifier&amp;quot;])[1])&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;tns:IF_EventHandlerName>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;IF_EventHandlerName&amp;quot;][1]&quot;/>&lt;/tns:IF_EventHandlerName>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:source_endpoint>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]&quot;/>&lt;/tns:source_endpoint>&lt;/xsl:if>&lt;/tns:TransformerInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallTranslateCorporationtoFHIR-input"
+                    name="CallTranslateCorporationtoFHIR"
+                    outputVariable="CallTranslateCorporationtoFHIR" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="CallProcessToCallTranslateCorporationtoFHIR1"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallTranslateCorporationtoFHIRToCallPublishFHIRMessageToTopic"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:ns=&quot;http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;JMSReceiveMessage1&quot;/>&lt;xsl:template name=&quot;CallTranslateCorporationtoFHIR-input&quot; match=&quot;/&quot;>&lt;tns:TransformerInput>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSTenantID&amp;quot;][1]&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;MHSSubTenantID&amp;quot;][1]&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceDomain&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSResourceSubDomain&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;EVT_MHSEventAction&amp;quot;][1]&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns:FHIRResourceType>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;concat(&amp;quot;PM-CE-&amp;quot;, ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;FHIRResourceIdentifier&amp;quot;])[1])&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;tns:IF_EventHandlerName>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;IF_EventHandlerName&amp;quot;][1]&quot;/>&lt;/tns:IF_EventHandlerName>&lt;xsl:if test=&quot;not(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]/@xsi:nil=(&amp;quot;true&amp;quot;)) or ($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]/@xsi:nil=(&amp;quot;1&amp;quot;)))&quot;>&lt;tns:source_endpoint>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name = &amp;quot;source_endpoint&amp;quot;][1]&quot;/>&lt;/tns:source_endpoint>&lt;/xsl:if>&lt;/tns:TransformerInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess
+                        moduleRef="CommonIntegrationPackLib"
+                        subProcessName="commonintegrationpacklib.CoreCorporationEvent" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;CallTranslateCorporationtoFHIR&quot;/>&lt;xsl:template name=&quot;CallPublishFHIRMessageToTopic-input&quot; match=&quot;/&quot;>&lt;tns:TransformerOutput>&lt;tns:JMSCorrelationId>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:JMSCorrelationId&quot;/>&lt;/tns:JMSCorrelationId>&lt;tns:MHSMessageType>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSMessageType&quot;/>&lt;/tns:MHSMessageType>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceType&quot;>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceIdentifier&quot;>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;/xsl:if>&lt;tns:Content-Type>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Content-Type&quot;/>&lt;/tns:Content-Type>&lt;tns:Content-Type-Version>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Content-Type-Version&quot;/>&lt;/tns:Content-Type-Version>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:Payload&quot;>&lt;tns:Payload>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Payload&quot;/>&lt;/tns:Payload>&lt;/xsl:if>&lt;/tns:TransformerOutput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallPublishFHIRMessageToTopic-input"
+                    name="CallPublishFHIRMessageToTopic" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="CallTranslateCorporationtoFHIRToCallPublishFHIRMessageToTopic"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallPublishFHIRMessageToTopicToCallProcess1"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/commonintegrationpacklib/FHIROutboundEventTransformerMsg&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;CallTranslateCorporationtoFHIR&quot;/>&lt;xsl:template name=&quot;CallPublishFHIRMessageToTopic-input&quot; match=&quot;/&quot;>&lt;tns:TransformerOutput>&lt;tns:JMSCorrelationId>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:JMSCorrelationId&quot;/>&lt;/tns:JMSCorrelationId>&lt;tns:MHSMessageType>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSMessageType&quot;/>&lt;/tns:MHSMessageType>&lt;tns:MHSTenantID>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSTenantID&quot;/>&lt;/tns:MHSTenantID>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:MHSSubTenantID&quot;>&lt;tns:MHSSubTenantID>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:MHSSubTenantID&quot;/>&lt;/tns:MHSSubTenantID>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceDomain&quot;>&lt;tns:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceDomain&quot;/>&lt;/tns:EVT_MHSResourceDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceSubDomain&quot;>&lt;tns:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSResourceSubDomain&quot;/>&lt;/tns:EVT_MHSResourceSubDomain>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSEventAction&quot;>&lt;tns:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:EVT_MHSEventAction&quot;/>&lt;/tns:EVT_MHSEventAction>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceType&quot;>&lt;tns:FHIRResourceType>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceType&quot;/>&lt;/tns:FHIRResourceType>&lt;/xsl:if>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceIdentifier&quot;>&lt;tns:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:FHIRResourceIdentifier&quot;/>&lt;/tns:FHIRResourceIdentifier>&lt;/xsl:if>&lt;tns:Content-Type>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Content-Type&quot;/>&lt;/tns:Content-Type>&lt;tns:Content-Type-Version>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Content-Type-Version&quot;/>&lt;/tns:Content-Type-Version>&lt;xsl:if test=&quot;$CallTranslateCorporationtoFHIR/tns:Payload&quot;>&lt;tns:Payload>&lt;xsl:value-of select=&quot;$CallTranslateCorporationtoFHIR/tns:Payload&quot;/>&lt;/tns:Payload>&lt;/xsl:if>&lt;/tns:TransformerOutput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess
+                        moduleRef="CommonIntegrationPackLib"
+                        subProcessName="commonintegrationpacklib.PublishFHIRMessageToPublicTopic" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallStartAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;&amp;quot;JMSReceiveMessage&amp;quot;&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallStartAuditLog-input"
+                    name="CallStartAuditLog" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="JMSReceiveMessage1ToCallProcess"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallProcessToCallTranslateCorporationtoFHIR"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:template name=&quot;CallStartAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;&amp;quot;JMSReceiveMessage&amp;quot;&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="AdapterCommonLib"
+                        subProcessName="adaptercommonlib.logging.Log" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:template name=&quot;CallEndAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;&amp;quot;CallPublishFHIRMessageToTopic&amp;quot;&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallEndAuditLog-input"
+                    name="CallEndAuditLog" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="CallPublishFHIRMessageToTopicToCallProcess1"/>
+                        <bpws:target linkName="CallValidateRefreshResponseToCallEndAuditLog"/>
+                    </bpws:targets>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://mhs.mckesson.com/OperationalMsg&quot; xmlns:bw=&quot;http://www.tibco.com/bw/xpath/bw-custom-functions&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;_processContext&quot;/>&lt;xsl:param name=&quot;pv.bw.process.name&quot;/>&lt;xsl:param name=&quot;pv.log.scope&quot;/>&lt;xsl:param name=&quot;pv.log.codesystem.audit&quot;/>&lt;xsl:param name=&quot;pv.log.sensitiveinfoflag&quot;/>&lt;xsl:param name=&quot;pv.log.severity&quot;/>&lt;xsl:param name=&quot;pv.log.processingdomain&quot;/>&lt;xsl:template name=&quot;CallEndAuditLog-input&quot; match=&quot;/&quot;>&lt;tns:OperationalMsg>&lt;tns:correlationID>&lt;xsl:value-of select=&quot;$_processContext/CustomJobId&quot;/>&lt;/tns:correlationID>&lt;tns:msgSourceTier>&lt;tns:applicationName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.MODULE.NAME&amp;quot;)&quot;/>&lt;/tns:applicationName>&lt;tns:componentName>&lt;xsl:value-of select=&quot;$pv.bw.process.name&quot;/>&lt;/tns:componentName>&lt;tns:hostName>&lt;xsl:value-of select=&quot;bw:getSystemProperty(&amp;quot;BW.HOST.NAME&amp;quot;)&quot;/>&lt;/tns:hostName>&lt;tns:scope>&lt;xsl:value-of select=&quot;$pv.log.scope&quot;/>&lt;/tns:scope>&lt;/tns:msgSourceTier>&lt;tns:timestamp>&lt;xsl:value-of select=&quot;current-dateTime()&quot;/>&lt;/tns:timestamp>&lt;tns:processingDomain>&lt;xsl:value-of select=&quot;$pv.log.processingdomain&quot;/>&lt;/tns:processingDomain>&lt;tns:processingActivity>&lt;xsl:value-of select=&quot;&amp;quot;CallPublishFHIRMessageToTopic&amp;quot;&quot;/>&lt;/tns:processingActivity>&lt;tns:codeSystem>&lt;xsl:value-of select=&quot;$pv.log.codesystem.audit&quot;/>&lt;/tns:codeSystem>&lt;tns:codeValue>&lt;xsl:value-of select=&quot;200&quot;/>&lt;/tns:codeValue>&lt;tns:sensitiveInfoFlag>&lt;xsl:value-of select=&quot;$pv.log.sensitiveinfoflag&quot;/>&lt;/tns:sensitiveInfoFlag>&lt;tns:severity>&lt;xsl:value-of select=&quot;$pv.log.severity&quot;/>&lt;/tns:severity>&lt;/tns:OperationalMsg>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="AdapterCommonLib"
+                        subProcessName="adaptercommonlib.logging.Log" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.com/namespaces/tns/1477927073000&quot; xmlns:ns=&quot;http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;JMSReceiveMessage1&quot;/>&lt;xsl:template name=&quot;CallValidateRefreshResponse-input&quot; match=&quot;/&quot;>&lt;tns:Element>&lt;tns:refreshStatus>&lt;xsl:value-of select=&quot;string(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name='IF_RefreshStatus'])[1]) &quot;/>&lt;/tns:refreshStatus>&lt;tns:messageBody>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/Body&quot;/>&lt;/tns:messageBody>&lt;tns:handlerName>&lt;xsl:value-of select=&quot;&amp;quot;CoreCorporationEventHandler&amp;quot;&quot;/>&lt;/tns:handlerName>&lt;tns:correlationId>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/JMSHeaders/ns:JMSCorrelationID&quot;/>&lt;/tns:correlationId>&lt;/tns:Element>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="CallValidateRefreshResponse-input"
+                    name="CallValidateRefreshResponse"
+                    outputVariable="CallValidateRefreshResponse" type="bw.generalactivities.callprocess">
+                    <bpws:targets>
+                        <bpws:target linkName="CallProcessToCallTranslateCorporationtoFHIR"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallProcessToCallTranslateCorporationtoFHIR1">
+                            <tibex:DesignExpression>
+                                <tibex:expression
+                                    expression="$CallValidateRefreshResponse eq true()" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
+                            </tibex:DesignExpression>
+                            <bpws:transitionCondition><![CDATA[$CallValidateRefreshResponse eq true()]]></bpws:transitionCondition>
+                        </bpws:source>
+                        <bpws:source linkName="CallValidateRefreshResponseToCallEndAuditLog">
+                            <tibex:DesignExpression>
+                                <tibex:expression
+                                    expression="##otherwise##" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"/>
+                            </tibex:DesignExpression>
+                            <bpws:transitionCondition><![CDATA[##otherwise##]]></bpws:transitionCondition>
+                        </bpws:source>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.com/namespaces/tns/1477927073000&quot; xmlns:ns=&quot;http://www.tibco.com/namespaces/tnt/plugins/jms+9ce2ebd8-243d-445d-b96e-10c6aa127a09+output&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;JMSReceiveMessage1&quot;/>&lt;xsl:template name=&quot;CallValidateRefreshResponse-input&quot; match=&quot;/&quot;>&lt;tns:Element>&lt;tns:refreshStatus>&lt;xsl:value-of select=&quot;string(($JMSReceiveMessage1/DynamicProperties/ns:property/ns:value[../ns:name='IF_RefreshStatus'])[1]) &quot;/>&lt;/tns:refreshStatus>&lt;tns:messageBody>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/Body&quot;/>&lt;/tns:messageBody>&lt;tns:handlerName>&lt;xsl:value-of select=&quot;&amp;quot;CoreCorporationEventHandler&amp;quot;&quot;/>&lt;/tns:handlerName>&lt;tns:correlationId>&lt;xsl:value-of select=&quot;$JMSReceiveMessage1/JMSHeaders/ns:JMSCorrelationID&quot;/>&lt;/tns:correlationId>&lt;/tns:Element>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess
+                        moduleRef="CommonIntegrationPackLib"
+                        subProcessName="commonintegrationpacklib.ValidateRefreshResponse" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+        </bpws:flow>
+    </bpws:scope>
+</bpws:process>

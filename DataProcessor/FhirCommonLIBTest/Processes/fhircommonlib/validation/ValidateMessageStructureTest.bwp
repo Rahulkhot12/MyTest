@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpws:process exitOnStandardFault="no"
+    name="fhircommonlib.validation.ValidateMessageStructureTest"
+    suppressJoinFailure="yes"
+    targetNamespace="http://xmlns.example.com/20161004152034"
+    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+    xmlns:info="http://www.tibco.com/bw/process/info"
+    xmlns:ns="http://www.tibco.com/pe/EngineTypes"
+    xmlns:ns0="http://www.example.org/TestResult"
+    xmlns:ns1="www.tibco.com/plugin/java/JavaInvokeActivityInput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityInput"
+    xmlns:ns2="www.tibco.com/plugin/java/JavaInvokeActivityOutput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityOutput"
+    xmlns:ns3="http://www.example.org/FhirValidator"
+    xmlns:ns4="www.tibco.com/plugin/java/JavaInvokeActivityInput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityInput"
+    xmlns:ns5="www.tibco.com/plugin/java/JavaInvokeActivityOutput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityOutput"
+    xmlns:ns6="www.tibco.com/plugin/java/JavaInvokeActivityInput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityInput"
+    xmlns:ns7="www.tibco.com/plugin/java/JavaInvokeActivityOutput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityOutput"
+    xmlns:sca="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+    xmlns:sca-bpel="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"
+    xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"
+    xmlns:tibprop="http://ns.tibco.com/bw/property" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <tibex:Types>
+        <xs:schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="http://www.tibco.com/pe/EngineTypes"
+            xmlns:tns="http://www.tibco.com/pe/EngineTypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ErrorReport">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="FullClass" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Class" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="FaultDetail">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ActivityName" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0" name="Data" type="tns:anydata"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="Msg" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="MsgCode" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessStack" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="StackTrace" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="ProcessContext">
+                <xs:sequence>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="JobId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" name="ProcessInstanceId" type="xs:string"/>
+                    <xs:element
+                        block="extension restriction substitution"
+                        form="unqualified" minOccurs="0"
+                        name="CustomJobId" type="xs:string"/>
+                    <!--xs:element name="RestartedFromCheckpoint" form="unqualified" block="extension restriction substitution" type="xs:boolean"/-->
+                    <!--xs:element minOccurs="0" maxOccurs="unbounded" name="TrackingInfo" form="unqualified" block="extension restriction substitution" type="xs:string"/-->
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType block="extension restriction"
+                final="extension restriction" name="anydata">
+                <xs:sequence>
+                    <xs:any namespace="##any" processContents="lax"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ErrorReport" type="tns:ErrorReport"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="FaultDetail" type="tns:FaultDetail"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="ProcessContext" type="tns:ProcessContext"/>
+            <xs:element block="extension restriction substitution"
+                final="extension restriction" name="CorrelationValue" type="xs:string"/>
+        </xs:schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="unqualified"
+            targetNamespace="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions"
+            version="" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.tibco.com/bw/pe/plugin/5.0/exceptions">
+            <complexType name="ActivityExceptionType">
+                <sequence>
+                    <element name="msg" type="string"/>
+                    <element minOccurs="0" name="msgCode" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="ActivityException" type="tns:ActivityExceptionType"/>
+            <complexType name="ActivityTimedOutExceptionType">
+                <complexContent>
+                    <extension base="tns:ActivityExceptionType"/>
+                </complexContent>
+            </complexType>
+            <element name="ActivityTimedOutException" type="tns:ActivityTimedOutExceptionType"/>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityInput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityInput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityInput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityInput">
+            <complexType name="MutTypeMethodParameters">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="resourcePath" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="JavaInvokeActivityInput" type="tns:MutTypeMethodInputRoot"/>
+            <complexType name="MutTypeMethodInputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="MethodParameters" type="tns:MutTypeMethodParameters"/>
+                </sequence>
+            </complexType>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityOutput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityOutput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityOutput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityOutput">
+            <element name="JavaInvokeActivityOutput" type="tns:MutTypeMethodOutputRoot"/>
+            <complexType name="MutTypeMethodOutputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="0" name="MethodReturnValue" type="string"/>
+                </sequence>
+            </complexType>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityInput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityInput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityInput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityInput">
+            <complexType name="MutTypeMethodParameters">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="resourcePath" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="JavaInvokeActivityInput" type="tns:MutTypeMethodInputRoot"/>
+            <complexType name="MutTypeMethodInputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="MethodParameters" type="tns:MutTypeMethodParameters"/>
+                </sequence>
+            </complexType>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityOutput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityOutput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityOutput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityOutput">
+            <element name="JavaInvokeActivityOutput" type="tns:MutTypeMethodOutputRoot"/>
+            <complexType name="MutTypeMethodOutputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="0" name="MethodReturnValue" type="string"/>
+                </sequence>
+            </complexType>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityInput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityInput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityInput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityInput">
+            <complexType name="MutTypeMethodParameters">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="resourcePath" type="string"/>
+                </sequence>
+            </complexType>
+            <element name="JavaInvokeActivityInput" type="tns:MutTypeMethodInputRoot"/>
+            <complexType name="MutTypeMethodInputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="1" name="MethodParameters" type="tns:MutTypeMethodParameters"/>
+                </sequence>
+            </complexType>
+        </schema>
+        <schema attributeFormDefault="unqualified"
+            elementFormDefault="qualified"
+            targetNamespace="www.tibco.com/plugin/java/JavaInvokeActivityOutput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityOutput"
+            xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="www.tibco.com/plugin/java/JavaInvokeActivityOutput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityOutput">
+            <element name="JavaInvokeActivityOutput" type="tns:MutTypeMethodOutputRoot"/>
+            <complexType name="MutTypeMethodOutputRoot">
+                <sequence>
+                    <element form="unqualified" maxOccurs="1"
+                        minOccurs="0" name="MethodReturnValue" type="string"/>
+                </sequence>
+            </complexType>
+        </schema>
+    </tibex:Types>
+    <tibex:ProcessInfo callable="true" createdBy="e7nrlj4"
+        createdOn="Tue Oct 04 15:20:34 CDT 2016" description=""
+        modifiers="public" productVersion="6.3.3 V23 2016-08-10"
+        scalable="true" singleton="true" stateless="false" type="IT"/>
+    <tibex:ProcessInterface context="" input="" output="{http://www.example.org/TestResult}TestResult"/>
+    <tibex:ProcessTemplateConfigurations/>
+    <notation:Diagram measurementUnit="Pixel" type="BWProcess"
+        xmlns:bwnotation="http://tns.tibco.com/bw/runtime/BWNotation"
+        xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <children type="2001">
+            <children type="5001"/>
+            <children type="3002">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3003">
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+            </children>
+            <children type="3004">
+                <children type="4018">
+                    <children type="3018">
+                        <children type="4020">
+                            <children type="3020">
+                                <children type="4005">
+                                    <children type="3007">
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.0"/>
+                                    <layoutConstraint x="-28"
+                                    xsi:type="notation:Bounds" y="2"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.1"/>
+                                    <layoutConstraint x="391"
+                                    xsi:type="notation:Bounds" y="2"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.2"/>
+                                    <layoutConstraint x="85"
+                                    xsi:type="notation:Bounds" y="69"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.3"/>
+                                    <layoutConstraint x="246"
+                                    xsi:type="notation:Bounds" y="69"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.4"/>
+                                    <layoutConstraint x="85"
+                                    xsi:type="notation:Bounds" y="160"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.5"/>
+                                    <layoutConstraint x="226"
+                                    xsi:type="notation:Bounds" y="160"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.6"/>
+                                    <layoutConstraint x="85"
+                                    xsi:type="notation:Bounds" y="254"/>
+                                    </children>
+                                    <children type="4002">
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <children type="4017">
+                                    <styles
+                                    fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <layoutConstraint xsi:type="notation:Bounds"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles
+                                    backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <element href="//0/@process/@activity/@activity/@activities.7"/>
+                                    <layoutConstraint x="226"
+                                    xsi:type="notation:Bounds" y="254"/>
+                                    </children>
+                                    <styles xsi:type="notation:DrawerStyle"/>
+                                    <styles xsi:type="notation:SortingStyle"/>
+                                    <styles xsi:type="notation:FilteringStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    </children>
+                                    <styles fontName="Segoe UI"
+                                    lineColor="0" xsi:type="notation:ShapeStyle"/>
+                                    <styles backgroundColor="16777215"
+                                    gradientEndColor="50431"
+                                    gradientStartColor="16777215" xsi:type="bwnotation:BackgroundStyle"/>
+                                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                                    <element href="//0/@process/@activity/@activity"/>
+                                    <layoutConstraint height="541"
+                                    width="524" xsi:type="notation:Bounds"/>
+                                </children>
+                                <styles xsi:type="notation:SortingStyle"/>
+                                <styles xsi:type="notation:FilteringStyle"/>
+                            </children>
+                            <styles fontName="Segoe UI" lineColor="0" xsi:type="notation:ShapeStyle"/>
+                            <styles xsi:type="bwnotation:BackgroundStyle"/>
+                            <styles xsi:type="bwnotation:ResizingStyle"/>
+                            <element href="//0/@process/@activity"/>
+                            <layoutConstraint height="384" width="527" xsi:type="notation:Bounds"/>
+                        </children>
+                        <styles xsi:type="notation:SortingStyle"/>
+                        <styles xsi:type="notation:FilteringStyle"/>
+                        <element href="//0/@process/@activity"/>
+                    </children>
+                    <styles fontName="Segoe UI" lineColor="0" xsi:type="notation:ShapeStyle"/>
+                    <styles xsi:type="bwnotation:BackgroundStyle"/>
+                    <styles xsi:type="bwnotation:ResizingStyle"/>
+                    <element href="//0/@process/@activity"/>
+                    <layoutConstraint height="408" width="527" x="1"
+                        xsi:type="notation:Bounds" y="1"/>
+                </children>
+                <styles xsi:type="notation:SortingStyle"/>
+                <styles xsi:type="notation:FilteringStyle"/>
+                <element href="//0/@process"/>
+            </children>
+            <styles fontName="Segoe UI" lineColor="0" xsi:type="notation:ShapeStyle"/>
+            <element href="//0/@process"/>
+            <layoutConstraint height="617" width="869" xsi:type="notation:Bounds"/>
+        </children>
+        <styles xsi:type="notation:DiagramStyle"/>
+        <element href="//0"/>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.0"/>
+            <bendpoints points="[0, 0, 0, 0]$[0, 0, 0, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.2"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.1"/>
+            <bendpoints points="[0, 0, 0, 0]$[0, 0, 0, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.3"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.2"/>
+            <bendpoints points="[25, -11, -120, 56]$[121, -56, -24, 11]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.4" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.3"/>
+            <bendpoints points="[18, 25, -95, -133]$[95, 134, -18, -24]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.4"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.5" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.4"/>
+            <bendpoints points="[25, 0, -116, 0]$[117, 0, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.5"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.5"/>
+            <bendpoints
+                points="[25, 0, -140, 158]$[95, 0, -70, 158]$[95, -158, -70, 0]$[141, -158, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.6"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.7" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.6"/>
+            <bendpoints points="[25, 0, -116, 0]$[117, 0, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.6" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.7"/>
+            <bendpoints
+                points="[25, 13, -88, -239]$[57, 13, -56, -239]$[57, 257, -56, 5]$[89, 257, -24, 5]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+        <edges
+            source="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.7"
+            target="//@children.0/@children.3/@children.0/@children.0/@children.0/@children.0/@children.0/@children.0/@children.1" type="4006">
+            <children type="6002">
+                <layoutConstraint xsi:type="notation:Location" y="40"/>
+            </children>
+            <styles lineColor="0" xsi:type="notation:ConnectorStyle"/>
+            <styles fontName="Segoe UI" xsi:type="notation:FontStyle"/>
+            <element href="//0/@process/@activity/@activity/@links/@children.8"/>
+            <bendpoints
+                points="[25, 0, -140, 252]$[99, 0, -66, 252]$[99, -252, -66, 0]$[141, -252, -24, 0]" xsi:type="notation:RelativeBendpoints"/>
+        </edges>
+    </notation:Diagram>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://www.example.org/TestResult"/>
+    <bpws:import importType="http://www.w3.org/2001/XMLSchema" namespace="http://www.example.org/FhirValidator"/>
+    <bpws:variables>
+        <bpws:variable element="ns:ProcessContext"
+            name="_processContext" sca-bpel:internal="true"/>
+        <bpws:variable element="ns0:TestResult" name="End-input"
+            sca-bpel:internal="true" tibex:parameter="out"/>
+        <bpws:variable element="ns1:JavaInvokeActivityInput"
+            name="HappyEventMsg-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns2:JavaInvokeActivityOutput"
+            name="HappyEventMsg" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationInput"
+            name="ValidateStructure_Happy-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationOutput"
+            name="ValidateStructure_Happy" sca-bpel:internal="true"/>
+        <bpws:variable element="ns4:JavaInvokeActivityInput"
+            name="SadEventMsg-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns5:JavaInvokeActivityOutput"
+            name="SadEventMsg" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationInput"
+            name="ValidateStructure_Sad-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationOutput"
+            name="ValidateStructure_Sad" sca-bpel:internal="true"/>
+        <bpws:variable element="ns6:JavaInvokeActivityInput"
+            name="OperationMsg-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns7:JavaInvokeActivityOutput"
+            name="OperationMsg" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationInput"
+            name="Validate_OperationMsg_BadDataReference-input" sca-bpel:internal="true"/>
+        <bpws:variable element="ns3:MsgStructureValidationOutput"
+            name="Validate_OperationMsg_BadDataReference" sca-bpel:internal="true"/>
+    </bpws:variables>
+    <bpws:extensions>
+        <bpws:extension mustUnderstand="no" namespace="http://www.eclipse.org/gmf/runtime/1.0.2/notation"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bw/process/info"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca-bpel/200801"/>
+        <bpws:extension mustUnderstand="no" namespace="http://docs.oasis-open.org/ns/opencsa/sca/200912"/>
+        <bpws:extension mustUnderstand="no" namespace="http://ns.tibco.com/bw/property"/>
+        <bpws:extension mustUnderstand="no" namespace="http://www.tibco.com/bpel/2007/extensions"/>
+    </bpws:extensions>
+    <bpws:scope name="scope">
+        <bpws:flow name="flow">
+            <bpws:links>
+                <bpws:link name="StartToJavaInvoke" tibex:linkType="SUCCESS"/>
+                <bpws:link name="JavaInvokeToCallProcess" tibex:linkType="SUCCESS"/>
+                <bpws:link name="CallProcessToEnd" tibex:linkType="SUCCESS"/>
+                <bpws:link name="StartToSadEventMsg" tibex:linkType="SUCCESS"/>
+                <bpws:link name="SadEventMsgToCopy_1_ValidateStructure" tibex:linkType="SUCCESS"/>
+                <bpws:link name="Copy_1_ValidateStructureToEnd" tibex:linkType="SUCCESS"/>
+                <bpws:link name="__Link" tibex:linkType="SUCCESS"/>
+                <bpws:link name="StartToOperationMsg" tibex:linkType="SUCCESS"/>
+                <bpws:link name="Validate_OperationMsgToEnd" tibex:linkType="SUCCESS"/>
+            </bpws:links>
+            <bpws:extensionActivity>
+                <tibex:receiveEvent createInstance="yes"
+                    eventTimeout="0" name="Start"
+                    tibex:xpdlId="7c71473f-5c41-4cba-ae7c-024b4fe208db" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:sources>
+                        <bpws:source linkName="StartToJavaInvoke"/>
+                        <bpws:source linkName="StartToSadEventMsg"/>
+                        <bpws:source linkName="StartToOperationMsg"/>
+                    </bpws:sources>
+                    <tibex:eventSource>
+                        <tibex:StartEvent xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                    </tibex:eventSource>
+                </tibex:receiveEvent>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:activityExtension
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/TestResult&quot; xmlns:tns1=&quot;http://www.example.org/FhirValidator&quot; version=&quot;2.0&quot;>&#xa;    &lt;xsl:param name=&quot;ValidateStructure_Happy&quot;/>&#xa;    &lt;xsl:param name=&quot;ValidateStructure_Sad&quot;/>&#xa;    &lt;xsl:template name=&quot;End-input&quot; match=&quot;/&quot;>&#xa;        &lt;tns:TestResult>&#xa;            &lt;tns:status>&#xa;                &lt;xsl:value-of select=&quot;($ValidateStructure_Happy/tns1:issuesFound = 0) and ($ValidateStructure_Sad/tns1:issuesFound > 0)&quot;/>&#xa;            &lt;/tns:status>&#xa;        &lt;/tns:TestResult>&#xa;    &lt;/xsl:template>&#xa;&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="End-input" name="End"
+                    tibex:xpdlId="5d2acb84-b967-4fc1-aa6d-5959844742de" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="CallProcessToEnd"/>
+                        <bpws:target linkName="Copy_1_ValidateStructureToEnd"/>
+                        <bpws:target linkName="Validate_OperationMsgToEnd"/>
+                    </bpws:targets>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/TestResult&quot; xmlns:tns1=&quot;http://www.example.org/FhirValidator&quot; version=&quot;2.0&quot;>&#xa;    &lt;xsl:param name=&quot;ValidateStructure_Happy&quot;/>&#xa;    &lt;xsl:param name=&quot;ValidateStructure_Sad&quot;/>&#xa;    &lt;xsl:template name=&quot;End-input&quot; match=&quot;/&quot;>&#xa;        &lt;tns:TestResult>&#xa;            &lt;tns:status>&#xa;                &lt;xsl:value-of select=&quot;($ValidateStructure_Happy/tns1:issuesFound = 0) and ($ValidateStructure_Sad/tns1:issuesFound > 0)&quot;/>&#xa;            &lt;/tns:status>&#xa;        &lt;/tns:TestResult>&#xa;    &lt;/xsl:template>&#xa;&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:config>
+                        <bwext:BWActivity
+                            activityTypeID="bw.internal.end"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:internalactivities="http://ns.tibco.com/bw/core/internalactivity" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/core/internalactivity#//End"/>
+                                    <value xsi:type="internalactivities:End"/>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:config>
+                </tibex:activityExtension>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:activityExtension
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;JavaInvoke-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;HappyEventMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="HappyEventMsg-input"
+                    name="HappyEventMsg" outputVariable="HappyEventMsg"
+                    tibex:xpdlId="22fd592b-4c76-4527-aaa0-85162d04bb89" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="StartToJavaInvoke"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="JavaInvokeToCallProcess"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+22fd592b-4c76-4527-aaa0-85162d04bb89+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;JavaInvoke-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;HappyEventMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:config>
+                        <bwext:BWActivity
+                            activityTypeID="bw.java.javamethod"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:java="http://ns.tibco.com/bw/palette/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/palette/java#//JavaMethod"/>
+                                    <value
+                                    className="fhircommonlib.validation.TestUtility"
+                                    isNew="true"
+                                    isNewActivity="true"
+                                    isStaticMethod="true"
+                                    methodName="readResourceToString"
+                                    methodReturn="string" xsi:type="java:JavaMethod">
+                                    <methodParameter
+                                    paramName="resourcePath" paramType="string"/>
+                                    </value>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:config>
+                </tibex:activityExtension>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&#xa;    &lt;xsl:param name=&quot;HappyEventMsg&quot;/>&#xa;    &lt;xsl:template name=&quot;CallProcess-input&quot; match=&quot;/&quot;>&#xa;        &lt;tns:MsgStructureValidationInput>&#xa;            &lt;tns:messageProperties>&#xa;                &lt;tns1:MHSMessageType>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Event&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSMessageType>&#xa;                &lt;tns1:MHSTenantID>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSTenantID>&#xa;                &lt;tns1:MHSSubTenantID>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSSubTenantID>&#xa;                &lt;tns1:Content-Type>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&#xa;                &lt;/tns1:Content-Type>&#xa;                &lt;tns1:Content-Type-Version>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&#xa;                &lt;/tns1:Content-Type-Version>&#xa;                &lt;tns1:EVT_MHSResourceDomain>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Provider&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSResourceDomain>&#xa;                &lt;tns1:EVT_MHSResourceSubDomain>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;networks&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSResourceSubDomain>&#xa;                &lt;tns1:EVT_MHSEventAction>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;tbd&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSEventAction>&#xa;                &lt;tns1:FHIRResourceType>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&#xa;                &lt;/tns1:FHIRResourceType>&#xa;                &lt;tns1:FHIRResourceIdentifier>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;PM-P-229C8E3E361A0205E053ABE37A0AD7CD&amp;quot;&quot;/>&#xa;                &lt;/tns1:FHIRResourceIdentifier>&#xa;            &lt;/tns:messageProperties>&#xa;            &lt;tns:bundlePayload>&#xa;                &lt;xsl:value-of select=&quot;$HappyEventMsg/MethodReturnValue&quot;/>&#xa;            &lt;/tns:bundlePayload>&#xa;            &lt;tns:bundlePayloadContentType>&#xa;                &lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&#xa;            &lt;/tns:bundlePayloadContentType>&#xa;        &lt;/tns:MsgStructureValidationInput>&#xa;    &lt;/xsl:template>&#xa;&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="ValidateStructure_Happy-input"
+                    name="ValidateStructure_Happy"
+                    outputVariable="ValidateStructure_Happy"
+                    tibex:xpdlId="9b26d5cb-f7ad-42b4-ac49-f11a8f816491"
+                    type="bw.generalactivities.callprocess" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="JavaInvokeToCallProcess"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="CallProcessToEnd"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&#xa;    &lt;xsl:param name=&quot;HappyEventMsg&quot;/>&#xa;    &lt;xsl:template name=&quot;CallProcess-input&quot; match=&quot;/&quot;>&#xa;        &lt;tns:MsgStructureValidationInput>&#xa;            &lt;tns:messageProperties>&#xa;                &lt;tns1:MHSMessageType>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Event&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSMessageType>&#xa;                &lt;tns1:MHSTenantID>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSTenantID>&#xa;                &lt;tns1:MHSSubTenantID>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&#xa;                &lt;/tns1:MHSSubTenantID>&#xa;                &lt;tns1:Content-Type>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&#xa;                &lt;/tns1:Content-Type>&#xa;                &lt;tns1:Content-Type-Version>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&#xa;                &lt;/tns1:Content-Type-Version>&#xa;                &lt;tns1:EVT_MHSResourceDomain>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Provider&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSResourceDomain>&#xa;                &lt;tns1:EVT_MHSResourceSubDomain>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;networks&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSResourceSubDomain>&#xa;                &lt;tns1:EVT_MHSEventAction>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;tbd&amp;quot;&quot;/>&#xa;                &lt;/tns1:EVT_MHSEventAction>&#xa;                &lt;tns1:FHIRResourceType>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&#xa;                &lt;/tns1:FHIRResourceType>&#xa;                &lt;tns1:FHIRResourceIdentifier>&#xa;                    &lt;xsl:value-of select=&quot;&amp;quot;PM-P-229C8E3E361A0205E053ABE37A0AD7CD&amp;quot;&quot;/>&#xa;                &lt;/tns1:FHIRResourceIdentifier>&#xa;            &lt;/tns:messageProperties>&#xa;            &lt;tns:bundlePayload>&#xa;                &lt;xsl:value-of select=&quot;$HappyEventMsg/MethodReturnValue&quot;/>&#xa;            &lt;/tns:bundlePayload>&#xa;            &lt;tns:bundlePayloadContentType>&#xa;                &lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&#xa;            &lt;/tns:bundlePayloadContentType>&#xa;        &lt;/tns:MsgStructureValidationInput>&#xa;    &lt;/xsl:template>&#xa;&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="FhirCommonLIB"
+                        subProcessName="fhircommonlib.validation.ValidateMessageStructure" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:activityExtension
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;SadEventMsg-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;SadEventMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="SadEventMsg-input" name="SadEventMsg"
+                    outputVariable="SadEventMsg"
+                    tibex:xpdlId="af8a5977-e665-4317-a57b-acc0534e51d4" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="StartToSadEventMsg"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="SadEventMsgToCopy_1_ValidateStructure"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+af8a5977-e665-4317-a57b-acc0534e51d4+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;SadEventMsg-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;SadEventMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:config>
+                        <bwext:BWActivity
+                            activityTypeID="bw.java.javamethod"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:java="http://ns.tibco.com/bw/palette/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/palette/java#//JavaMethod"/>
+                                    <value
+                                    className="fhircommonlib.validation.TestUtility"
+                                    isNew="true"
+                                    isNewActivity="true"
+                                    isStaticMethod="true"
+                                    methodName="readResourceToString"
+                                    methodReturn="string" xsi:type="java:JavaMethod">
+                                    <methodParameter
+                                    paramName="resourcePath" paramType="string"/>
+                                    </value>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:config>
+                </tibex:activityExtension>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;SadEventMsg&quot;/>&lt;xsl:template name=&quot;Copy_1_ValidateStructure-input&quot; match=&quot;/&quot;>&lt;tns:MsgStructureValidationInput>&lt;tns:messageProperties>&lt;tns1:MHSMessageType>&lt;xsl:value-of select=&quot;&amp;quot;Event&amp;quot;&quot;/>&lt;/tns1:MHSMessageType>&lt;tns1:MHSTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSTenantID>&lt;tns1:MHSSubTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSSubTenantID>&lt;tns1:Content-Type>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns1:Content-Type>&lt;tns1:Content-Type-Version>&lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&lt;/tns1:Content-Type-Version>&lt;tns1:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;&amp;quot;Provider&amp;quot;&quot;/>&lt;/tns1:EVT_MHSResourceDomain>&lt;tns1:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;&amp;quot;networks&amp;quot;&quot;/>&lt;/tns1:EVT_MHSResourceSubDomain>&lt;tns1:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;&amp;quot;tbd&amp;quot;&quot;/>&lt;/tns1:EVT_MHSEventAction>&lt;tns1:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns1:FHIRResourceType>&lt;tns1:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;&amp;quot;PM-P-229C8E3E361A0205E053ABE37A0AD7CD&amp;quot;&quot;/>&lt;/tns1:FHIRResourceIdentifier>&lt;/tns:messageProperties>&lt;tns:bundlePayload>&lt;xsl:value-of select=&quot;$SadEventMsg/MethodReturnValue&quot;/>&lt;/tns:bundlePayload>&lt;tns:bundlePayloadContentType>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns:bundlePayloadContentType>&lt;/tns:MsgStructureValidationInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="ValidateStructure_Sad-input"
+                    name="ValidateStructure_Sad"
+                    outputVariable="ValidateStructure_Sad"
+                    tibex:xpdlId="11e40e6d-38d2-4c42-9621-daa52881f5f3"
+                    type="bw.generalactivities.callprocess" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="SadEventMsgToCopy_1_ValidateStructure"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="Copy_1_ValidateStructureToEnd"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;SadEventMsg&quot;/>&lt;xsl:template name=&quot;Copy_1_ValidateStructure-input&quot; match=&quot;/&quot;>&lt;tns:MsgStructureValidationInput>&lt;tns:messageProperties>&lt;tns1:MHSMessageType>&lt;xsl:value-of select=&quot;&amp;quot;Event&amp;quot;&quot;/>&lt;/tns1:MHSMessageType>&lt;tns1:MHSTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSTenantID>&lt;tns1:MHSSubTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSSubTenantID>&lt;tns1:Content-Type>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns1:Content-Type>&lt;tns1:Content-Type-Version>&lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&lt;/tns1:Content-Type-Version>&lt;tns1:EVT_MHSResourceDomain>&lt;xsl:value-of select=&quot;&amp;quot;Provider&amp;quot;&quot;/>&lt;/tns1:EVT_MHSResourceDomain>&lt;tns1:EVT_MHSResourceSubDomain>&lt;xsl:value-of select=&quot;&amp;quot;networks&amp;quot;&quot;/>&lt;/tns1:EVT_MHSResourceSubDomain>&lt;tns1:EVT_MHSEventAction>&lt;xsl:value-of select=&quot;&amp;quot;tbd&amp;quot;&quot;/>&lt;/tns1:EVT_MHSEventAction>&lt;tns1:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns1:FHIRResourceType>&lt;tns1:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;&amp;quot;PM-P-229C8E3E361A0205E053ABE37A0AD7CD&amp;quot;&quot;/>&lt;/tns1:FHIRResourceIdentifier>&lt;/tns:messageProperties>&lt;tns:bundlePayload>&lt;xsl:value-of select=&quot;$SadEventMsg/MethodReturnValue&quot;/>&lt;/tns:bundlePayload>&lt;tns:bundlePayloadContentType>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns:bundlePayloadContentType>&lt;/tns:MsgStructureValidationInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="FhirCommonLIB"
+                        subProcessName="fhircommonlib.validation.ValidateMessageStructure" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:activityExtension
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;OperationMsg-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;OperationMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="OperationMsg-input"
+                    name="OperationMsg" outputVariable="OperationMsg"
+                    tibex:xpdlId="132f3d35-7467-4c94-bcf0-edb2188b81ac" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="StartToOperationMsg"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="__Link"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;www.tibco.com/plugin/java/JavaInvokeActivityInput+132f3d35-7467-4c94-bcf0-edb2188b81ac+JavaInvokeActivityInput&quot; version=&quot;2.0&quot;>&lt;xsl:template name=&quot;OperationMsg-input&quot; match=&quot;/&quot;>&lt;tns:JavaInvokeActivityInput>&lt;MethodParameters>&lt;resourcePath>&lt;xsl:value-of select=&quot;&amp;quot;OperationMsg.json&amp;quot;&quot;/>&lt;/resourcePath>&lt;/MethodParameters>&lt;/tns:JavaInvokeActivityInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:config>
+                        <bwext:BWActivity
+                            activityTypeID="bw.java.javamethod"
+                            xmlns:activityconfig="http://tns.tibco.com/bw/model/activityconfig"
+                            xmlns:bwext="http://tns.tibco.com/bw/model/core/bwext"
+                            xmlns:java="http://ns.tibco.com/bw/palette/java" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                            <activityConfig>
+                                <properties name="config" xsi:type="activityconfig:EMFProperty">
+                                    <type href="http://ns.tibco.com/bw/palette/java#//JavaMethod"/>
+                                    <value
+                                    className="fhircommonlib.validation.TestUtility"
+                                    isNew="true"
+                                    isNewActivity="true"
+                                    isStaticMethod="true"
+                                    methodName="readResourceToString"
+                                    methodReturn="string" xsi:type="java:JavaMethod">
+                                    <methodParameter
+                                    paramName="resourcePath" paramType="string"/>
+                                    </value>
+                                </properties>
+                            </activityConfig>
+                        </bwext:BWActivity>
+                    </tibex:config>
+                </tibex:activityExtension>
+            </bpws:extensionActivity>
+            <bpws:extensionActivity>
+                <tibex:extActivity
+                    expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;OperationMsg&quot;/>&lt;xsl:template name=&quot;Validate_OperationMsg_BadDataReference-input&quot; match=&quot;/&quot;>&lt;tns:MsgStructureValidationInput>&lt;tns:messageProperties>&lt;tns1:MHSMessageType>&lt;xsl:value-of select=&quot;&amp;quot;Operation&amp;quot;&quot;/>&lt;/tns1:MHSMessageType>&lt;tns1:MHSTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSTenantID>&lt;tns1:MHSSubTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSSubTenantID>&lt;tns1:Content-Type>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns1:Content-Type>&lt;tns1:Content-Type-Version>&lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&lt;/tns1:Content-Type-Version>&lt;tns1:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns1:FHIRResourceType>&lt;tns1:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;&amp;quot;f74d3566-5d83-4e88-b759-54406ceed6dd&amp;quot;&quot;/>&lt;/tns1:FHIRResourceIdentifier>&lt;tns1:FHIROperation>&lt;xsl:value-of select=&quot;&amp;quot;http://localhost:8080/fhir/OperationDefinition/pm-data-load&amp;quot;&quot;/>&lt;/tns1:FHIROperation>&lt;/tns:messageProperties>&lt;tns:bundlePayload>&lt;xsl:value-of select=&quot;$OperationMsg/MethodReturnValue&quot;/>&lt;/tns:bundlePayload>&lt;tns:bundlePayloadContentType>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns:bundlePayloadContentType>&lt;/tns:MsgStructureValidationInput>&lt;/xsl:template>&lt;/xsl:stylesheet>"
+                    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"
+                    inputVariable="Validate_OperationMsg_BadDataReference-input"
+                    name="Validate_OperationMsg_BadDataReference"
+                    outputVariable="Validate_OperationMsg_BadDataReference"
+                    tibex:xpdlId="6977e250-3a61-4839-a065-fe57545780da"
+                    type="bw.generalactivities.callprocess" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions">
+                    <bpws:targets>
+                        <bpws:target linkName="__Link"/>
+                    </bpws:targets>
+                    <bpws:sources>
+                        <bpws:source linkName="Validate_OperationMsgToEnd"/>
+                    </bpws:sources>
+                    <tibex:inputBindings>
+                        <tibex:inputBinding
+                            expression="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xa;&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; xmlns:tns=&quot;http://www.example.org/FhirValidator&quot; xmlns:tns1=&quot;http://com.tibco.bw.plugin.jms.propertiesa602d293-0c79-4f64-9b2b-6b435b7001a8MHSCoreMessagingProperties&quot; version=&quot;2.0&quot;>&lt;xsl:param name=&quot;OperationMsg&quot;/>&lt;xsl:template name=&quot;Validate_OperationMsg_BadDataReference-input&quot; match=&quot;/&quot;>&lt;tns:MsgStructureValidationInput>&lt;tns:messageProperties>&lt;tns1:MHSMessageType>&lt;xsl:value-of select=&quot;&amp;quot;Operation&amp;quot;&quot;/>&lt;/tns1:MHSMessageType>&lt;tns1:MHSTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSTenantID>&lt;tns1:MHSSubTenantID>&lt;xsl:value-of select=&quot;&amp;quot;default&amp;quot;&quot;/>&lt;/tns1:MHSSubTenantID>&lt;tns1:Content-Type>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns1:Content-Type>&lt;tns1:Content-Type-Version>&lt;xsl:value-of select=&quot;&amp;quot;1.0.2&amp;quot;&quot;/>&lt;/tns1:Content-Type-Version>&lt;tns1:FHIRResourceType>&lt;xsl:value-of select=&quot;&amp;quot;Organization&amp;quot;&quot;/>&lt;/tns1:FHIRResourceType>&lt;tns1:FHIRResourceIdentifier>&lt;xsl:value-of select=&quot;&amp;quot;f74d3566-5d83-4e88-b759-54406ceed6dd&amp;quot;&quot;/>&lt;/tns1:FHIRResourceIdentifier>&lt;tns1:FHIROperation>&lt;xsl:value-of select=&quot;&amp;quot;http://localhost:8080/fhir/OperationDefinition/pm-data-load&amp;quot;&quot;/>&lt;/tns1:FHIROperation>&lt;/tns:messageProperties>&lt;tns:bundlePayload>&lt;xsl:value-of select=&quot;$OperationMsg/MethodReturnValue&quot;/>&lt;/tns:bundlePayload>&lt;tns:bundlePayloadContentType>&lt;xsl:value-of select=&quot;&amp;quot;application/json+fhir&amp;quot;&quot;/>&lt;/tns:bundlePayloadContentType>&lt;/tns:MsgStructureValidationInput>&lt;/xsl:template>&lt;/xsl:stylesheet>" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xslt1.0"/>
+                    </tibex:inputBindings>
+                    <tibex:CallProcess moduleRef="FhirCommonLIB"
+                        subProcessName="fhircommonlib.validation.ValidateMessageStructure" xmlns:tibex="http://www.tibco.com/bpel/2007/extensions"/>
+                </tibex:extActivity>
+            </bpws:extensionActivity>
+        </bpws:flow>
+    </bpws:scope>
+</bpws:process>
