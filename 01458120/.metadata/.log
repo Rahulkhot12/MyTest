@@ -577,3 +577,63 @@ java.lang.RuntimeException
 
 !ENTRY com.tibco.xpd.fragments 4 0 2017-03-23 14:08:32.326
 !MESSAGE com.tibco.xpd.fragments.internal.FragmentsManager$5.run(FragmentsManager.java:787) FragmentsManager.initialize(): No root categories found!!!
+
+!ENTRY com.tibco.xpd.resources 2 0 2017-03-23 14:08:49.181
+!MESSAGE Indexer global.references.index has taken longer than 500ms (507 ms) for 'L/DataProcessorTest/Processes/dataprocessortest/UpdateDataStoreTest.bwp'.
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-23 14:08:58.708
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.HasOneStoreConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-23 14:08:58.712
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.KeyAliasNotNullConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-23 14:08:58.712
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.subject.editor.com.tibco.trinity.identity.subject.editor.validation.KeyPasswordNotNullConstraint" could not find target EMF type "SubjectConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-23 14:08:58.712
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.identity.trust.editor.constraint" could not find target EMF type "TrustConfiguration."
+
+!ENTRY org.eclipse.emf.validation 2 70 2017-03-23 14:08:59.658
+!MESSAGE Constraint "com.tibco.bw.sharedresource.trinity.ssl.editor.com.tibco.trinity.ssl.editor.invalid.remote.host.constraint" could not find target EMF type "SSLServerConfiguration."
+
+!ENTRY com.tibco.xpd.resources 2 0 2017-03-23 14:09:05.864
+!MESSAGE Indexer global.references.index has taken longer than 500ms (953 ms) for 'L/FhirCommonLIB/Schemas/dstu2/fhir-single.xsd'.
+
+!ENTRY org.eclipse.emf.validation 2 80 2017-03-23 14:09:13.094
+!MESSAGE The constraint "com.tibco.bw.palette.java.design.common.constraint.JavaMethod.validJavaMethod" is disabled.  It will not be evaluated.
+!STACK 0
+java.lang.NullPointerException
+	at com.tibco.bw.palette.java.design.common.JavaBaseActivityHelper.getClassLoader(JavaBaseActivityHelper.java:121)
+	at com.tibco.bw.palette.java.design.common.constraint.JavaMethodValidation.super(JavaMethodValidation.java:58)
+	at com.tibco.bw.palette.java.design.common.constraint.JavaMethodValidation.validate(JavaMethodValidation.java:44)
+	at org.eclipse.emf.validation.internal.util.JavaConstraintParser$ConstraintAdapter.validate(JavaConstraintParser.java:80)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.evaluateConstraints(AbstractValidator.java:241)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:264)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:211)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.doValidate(BatchValidator.java:149)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.validate(AbstractValidator.java:147)
+	at org.eclipse.emf.validation.internal.service.AbstractValidator.validate(AbstractValidator.java:126)
+	at org.eclipse.emf.validation.internal.service.BatchValidator.validate(BatchValidator.java:1)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:208)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:182)
+	at com.tibco.xpd.validation.internal.EMFValidator.o00000(EMFValidator.java:242)
+	at com.tibco.xpd.validation.internal.EMFValidator.runBatchValidation(EMFValidator.java:141)
+	at com.tibco.xpd.validation.internal.engine.ValidationEngine.validate(ValidationEngine.java:268)
+	at com.tibco.xpd.validation.explicit.Validator.super(Validator.java:219)
+	at com.tibco.xpd.validation.explicit.Validator.validate(Validator.java:140)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.validate(ValidationBuilder.java:1125)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.o00000(ValidationBuilder.java:762)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.o00000(ValidationBuilder.java:441)
+	at com.tibco.xpd.validation.internal.builder.ValidationBuilder.build(ValidationBuilder.java:191)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:734)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:206)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:246)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:299)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:302)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:358)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:381)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:143)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:241)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
